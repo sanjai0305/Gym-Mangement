@@ -36,22 +36,22 @@ export const Header: React.FC<HeaderProps> = ({
     <>
       <header
         id="fitcore-top-header"
-        className="h-20 px-4 sm:px-8 border-b border-slate-800/80 bg-[#090f20]/90 backdrop-blur-md flex items-center justify-between sticky top-0 z-20"
+        className="h-16 sm:h-20 px-3 sm:px-6 lg:px-8 border-b border-slate-800/80 bg-[#090f20]/90 backdrop-blur-md flex items-center justify-between sticky top-0 z-20"
       >
         {/* Left: Mobile Toggle & Title */}
-        <div className="flex items-center gap-3 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           {onToggleMobileMenu && (
             <button
               onClick={onToggleMobileMenu}
-              className="lg:hidden p-2 rounded-xl bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:text-white"
+              className="lg:hidden p-2 rounded-xl bg-slate-800/60 border border-slate-700/60 text-slate-300 hover:text-white shrink-0 min-h-[40px] min-w-[40px] flex items-center justify-center"
               aria-label="Toggle Navigation Menu"
             >
               <Menu className="w-5 h-5" />
             </button>
           )}
 
-          <div className="truncate">
-            <h1 className="font-bold text-lg sm:text-2xl text-white tracking-tight truncate">
+          <div className="min-w-0">
+            <h1 className="font-bold text-base sm:text-xl lg:text-2xl text-white tracking-tight truncate">
               {title}
             </h1>
             {subtitle && <p className="text-xs text-slate-400 mt-0.5 hidden sm:block truncate">{subtitle}</p>}

@@ -67,10 +67,10 @@ export const AttendancePage: React.FC<AttendancePageProps> = ({
   const currentlyInsideCount = logs.filter((l) => !l.checkOut).length;
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
       {/* Turnstile Status & Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Currently On Floor</div>
           <div className="font-display font-bold text-2xl text-primary mt-1">
             {currentlyInsideCount}{' '}
@@ -79,13 +79,13 @@ export const AttendancePage: React.FC<AttendancePageProps> = ({
           <div className="text-[11px] text-[#69799d] mt-1">Active within perimeter</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Total Check-ins Today</div>
           <div className="font-display font-bold text-2xl text-white mt-1">{todayCount}</div>
           <div className="text-[11px] text-emerald-400 mt-1">Peak: 06:30 - 08:30 AM</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Turnstile #01 (North)</div>
           <div className="flex items-center gap-2 mt-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -94,7 +94,7 @@ export const AttendancePage: React.FC<AttendancePageProps> = ({
           <div className="text-[11px] text-[#69799d] mt-1">Optical Relay Active</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Turnstile #02 (VIP Fast Track)</div>
           <div className="flex items-center gap-2 mt-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />

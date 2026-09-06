@@ -100,136 +100,134 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   ];
 
   return (
-    <div className="p-4 sm:p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
       {/* 8 Metric Dashboard Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
         {/* 1. Total Members */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-emerald-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-emerald-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Total Members</span>
             <div className="w-8 h-8 rounded-xl bg-slate-800/60 flex items-center justify-center text-slate-300 group-hover:text-emerald-400 transition-colors">
               <Users className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {metrics.totalMembers.toLocaleString()}
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold mt-2">
+          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold mt-1.5">
             <TrendingUp className="w-3.5 h-3.5" /> +5.2% MoM roster
           </div>
         </div>
 
         {/* 2. Active Members */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-emerald-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-emerald-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Active Members</span>
             <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
               <UserCheck className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {metrics.activeMembers.toLocaleString()}
           </div>
-          <div className="text-[11px] text-slate-400 mt-2">
+          <div className="text-[11px] text-slate-400 mt-1.5">
             Rate: <span className="text-emerald-400 font-semibold">92.4%</span> active pass
           </div>
         </div>
 
         {/* 3. New Members */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-blue-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-blue-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">New Members (30d)</span>
             <div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
               <UserPlus className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             +{metrics.newMembersThisMonth || 14}
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-blue-400 font-semibold mt-2">
+          <div className="flex items-center gap-1.5 text-[11px] text-blue-400 font-semibold mt-1.5">
             <ArrowUpRight className="w-3.5 h-3.5" /> High conversion
           </div>
         </div>
 
         {/* 4. Expiring Memberships */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-amber-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-amber-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Expiring in 7 Days</span>
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {metrics.expiringCount || renewalWatchlist?.length || 0}
           </div>
-          <div className="text-[11px] text-amber-400 font-semibold mt-2">Action required for renewal</div>
+          <div className="text-[11px] text-amber-400 font-semibold mt-1.5">Action required for renewal</div>
         </div>
 
         {/* 5. Monthly Revenue */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-emerald-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-emerald-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Monthly Revenue</span>
             <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {currency}
             {metrics.monthlyRevenue.toLocaleString()}
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold mt-2">
+          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold mt-1.5">
             <TrendingUp className="w-3.5 h-3.5" /> {metrics.revenueGrowth || '+14.2%'} MoM
           </div>
         </div>
 
         {/* 6. Pending Payments */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-rose-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-rose-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Pending Dues</span>
             <div className="w-8 h-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
               <AlertCircle className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {currency}
             {(metrics.pendingPaymentsAmount || 0).toLocaleString()}
           </div>
-          <div className="text-[11px] text-slate-400 mt-2">
-            <span className="text-rose-400 font-semibold">{metrics.pendingPaymentsCount || 0} invoices</span>{' '}
-            awaiting settlement
+          <div className="text-[11px] text-slate-400 mt-1.5">
+            <span className="text-rose-400 font-semibold">{metrics.pendingPaymentsCount || 0} invoices</span> awaiting settlement
           </div>
         </div>
 
         {/* 7. Today's Attendance / Floor Density */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-purple-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-purple-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Floor Telemetry</span>
             <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
               <Activity className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {metrics.floorCapacity?.current || 38}{' '}
             <span className="text-xs font-normal text-slate-400">/ {metrics.floorCapacity?.max || 150}</span>
           </div>
-          <div className="text-[11px] text-slate-400 mt-2">
-            Density: <span className="text-purple-400 font-semibold">{metrics.floorCapacity?.percentage || 25}%</span>{' '}
-            capacity
+          <div className="text-[11px] text-slate-400 mt-1.5">
+            Density: <span className="text-purple-400 font-semibold">{metrics.floorCapacity?.percentage || 25}%</span> capacity
           </div>
         </div>
 
         {/* 8. Active Trainers */}
-        <div className="p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-teal-500/30 transition-all shadow-sm group">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0e172e] border border-slate-800 hover:border-teal-500/30 transition-all shadow-sm group">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-medium">Active Trainers</span>
             <div className="w-8 h-8 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
               <Award className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-2 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 tracking-tight">
             {metrics.activeTrainers || 3} Coaches
           </div>
-          <div className="text-[11px] text-teal-400 font-semibold mt-2">100% floor shifts covered</div>
+          <div className="text-[11px] text-teal-400 font-semibold mt-1.5">100% floor shifts covered</div>
         </div>
       </div>
 

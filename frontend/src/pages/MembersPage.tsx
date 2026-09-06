@@ -299,23 +299,23 @@ export const MembersPage: React.FC<MembersPageProps> = ({
             <div
               key={member._id}
               onClick={() => onSelectMember(member._id)}
-              className="p-4 bg-[#0e172e] border border-slate-800 rounded-2xl space-y-3 active:scale-[0.99] transition-transform"
+              className="p-4 bg-[#0e172e] border border-slate-800 rounded-2xl space-y-3 active:scale-[0.99] transition-transform shadow-sm"
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-3 min-w-0">
                   {member.profileImage ? (
-                    <img src={member.profileImage} alt={member.name} className="w-10 h-10 rounded-xl object-cover" />
+                    <img src={member.profileImage} alt={member.name} className="w-10 h-10 rounded-xl object-cover shrink-0" />
                   ) : (
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 font-bold flex items-center justify-center text-xs border border-emerald-500/20">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 font-bold flex items-center justify-center text-xs border border-emerald-500/20 shrink-0">
                       {member.name.charAt(0)}
                     </div>
                   )}
-                  <div>
-                    <div className="font-bold text-white text-sm">{member.name}</div>
-                    <div className="text-xs text-slate-400">{member.email}</div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-white text-sm truncate">{member.name}</div>
+                    <div className="text-xs text-slate-400 truncate">{member.email}</div>
                   </div>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full border font-mono font-bold ${getStatusBadge(member.status)}`}>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full border font-mono font-bold shrink-0 ${getStatusBadge(member.status)}`}>
                   {member.status}
                 </span>
               </div>
@@ -326,9 +326,37 @@ export const MembersPage: React.FC<MembersPageProps> = ({
                   <span className="font-mono text-emerald-400 font-bold">{member.memberId}</span>
                 </div>
                 <div>
+                  <span className="text-slate-500 block text-[10px]">VALIDITY</span>
+                  <span className="font-mono text-slate-200">
+                    {member.daysRemaining !== undefined && member.daysRemaining >= 0 ? (
+                      <span className={member.daysRemaining <= 7 ? 'text-amber-400 font-bold' : 'text-slate-200'}>
+                        {member.daysRemaining} days left
+                      </span>
+                    ) : (
+                      <span className="text-rose-400">Expired</span>
+                    )}
+                  </span>
+                </div>
+                <div>
                   <span className="text-slate-500 block text-[10px]">PLAN</span>
                   <span className="text-slate-300 font-medium truncate block">{member.planName || 'Core Access'}</span>
                 </div>
+                <div>
+                  <span className="text-slate-500 block text-[10px]">TRAINER</span>
+                  <span className="text-slate-300 font-medium truncate block">{member.trainerName || 'Unassigned'}</span>
+                </div>
+              </div>
+
+              <div className="pt-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectMember(member._id);
+                  }}
+                  className="w-full py-2 bg-[#14203d] hover:bg-[#1b2b52] text-emerald-400 border border-slate-700/60 rounded-xl transition text-xs font-semibold flex items-center justify-center gap-1.5"
+                >
+                  Inspect Member Dossier
+                </button>
               </div>
             </div>
           ))
@@ -337,8 +365,8 @@ export const MembersPage: React.FC<MembersPageProps> = ({
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-3 bg-[#0e172e] border border-slate-800 rounded-2xl text-xs">
-          <div className="text-slate-400">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-[#0e172e] border border-slate-800 rounded-2xl text-xs">
+          <div className="text-slate-400 text-center sm:text-left">
             Showing <span className="text-white font-semibold">{(currentPage - 1) * pageSize + 1}</span> to{' '}
             <span className="text-white font-semibold">
               {Math.min(currentPage * pageSize, sortedMembers.length)}
@@ -350,7 +378,8 @@ export const MembersPage: React.FC<MembersPageProps> = ({
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300 hover:text-white transition-colors"
+              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300 hover:text-white transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+              aria-label="Previous Page"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -360,7 +389,8 @@ export const MembersPage: React.FC<MembersPageProps> = ({
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300 hover:text-white transition-colors"
+              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300 hover:text-white transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+              aria-label="Next Page"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
