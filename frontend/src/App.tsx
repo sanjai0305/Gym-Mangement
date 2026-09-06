@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
@@ -28,13 +28,28 @@ import { api } from './services/api';
 import { Member } from './types';
 import { Sparkles } from 'lucide-react';
 
+const getViewFromPath = (path: string): string => {
+  if (path.includes('memberships') || path.includes('members')) return 'members';
+  if (path.includes('attendance') || path.includes('turnstile')) return 'attendance';
+  if (path.includes('classes') || path.includes('schedule')) return 'classes';
+  if (path.includes('billing') || path.includes('payments') || path.includes('expenses')) return 'billing';
+  if (path.includes('workouts')) return 'workouts';
+  if (path.includes('reports')) return 'reports';
+  if (path.includes('notifications')) return 'notifications';
+  if (path.includes('settings')) return 'settings';
+  if (path.includes('member') && !path.includes('members')) return 'member-portal';
+  if (path.includes('trainer')) return 'trainer-portal';
+  if (path.includes('dashboard')) return 'dashboard';
+  return 'dashboard';
+};
+
 function MainApp() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Navigation view state
-  const [currentView, setCurrentView] = useState<string>('dashboard');
+  // Navigation view state initialized from current URL path
+  const [currentView, setCurrentView] = useState<string>(() => getViewFromPath(location.pathname));
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -47,23 +62,13 @@ function MainApp() {
   // Global search
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Synchronize route paths with current view
+  // Synchronize route paths with current view on navigation
   useEffect(() => {
-    const path = location.pathname;
-    if (path.includes('members') || path.includes('membership')) setCurrentView('members');
-    else if (path.includes('attendance') || path.includes('turnstile')) setCurrentView('attendance');
-    else if (path.includes('classes') || path.includes('schedule')) setCurrentView('classes');
-    else if (path.includes('billing') || path.includes('payments') || path.includes('expenses')) setCurrentView('billing');
-    else if (path.includes('workouts')) setCurrentView('workouts');
-    else if (path.includes('reports')) setCurrentView('reports');
-    else if (path.includes('notifications')) setCurrentView('notifications');
-    else if (path.includes('settings')) setCurrentView('settings');
-    else if (path.includes('member') && !path.includes('members')) setCurrentView('member-portal');
-    else if (path.includes('trainer')) setCurrentView('trainer-portal');
-    else if (path.includes('dashboard')) setCurrentView('dashboard');
+    const matched = getViewFromPath(location.pathname);
+    setCurrentView(matched);
   }, [location.pathname]);
 
-  // Auto-route based on authenticated role
+  // Auto-route based on authenticated role if landing on root
   useEffect(() => {
     if (user && location.pathname === '/') {
       if (user.role === 'MEMBER') {
@@ -87,7 +92,6 @@ function MainApp() {
 
   const handleNavigate = (view: string) => {
     setCurrentView(view);
-    // Update browser URL without reloading
     const rolePrefix = user?.role === 'MEMBER' ? '/member' : user?.role === 'TRAINER' ? '/trainer' : '/admin';
     navigate(`${rolePrefix}/${view}`);
   };
@@ -298,6 +302,28 @@ function MainApp() {
   );
 }
 
+function LandingRouteWrapper() {
+  const navigate = useNavigate();
+  return (
+    <LandingPage
+      onEnterApp={() => navigate('/admin/dashboard')}
+      onOpenSignIn={() => navigate('/login')}
+      onOpenRegister={() => navigate('/register')}
+    />
+  );
+}
+
+function AuthRouteWrapper({ initialMode }: { initialMode: 'signin' | 'register' }) {
+  const navigate = useNavigate();
+  return (
+    <AuthPage
+      initialMode={initialMode}
+      onSuccess={() => navigate('/admin/dashboard')}
+      onBackToHome={() => navigate('/')}
+    />
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -305,80 +331,21 @@ export default function App() {
         <ToastProvider>
           <Routes>
             {/* Public Landing & Marketing */}
-            <Route
-              path="/"
-              element={
-                <LandingPage
-                  onEnterApp={() => window.location.assign('/admin/dashboard')}
-                  onOpenSignIn={() => window.location.assign('/login')}
-                  onOpenRegister={() => window.location.assign('/register')}
-                />
-              }
-            />
-            <Route
-              path="/features"
-              element={
-                <LandingPage
-                  onEnterApp={() => window.location.assign('/admin/dashboard')}
-                  onOpenSignIn={() => window.location.assign('/login')}
-                  onOpenRegister={() => window.location.assign('/register')}
-                />
-              }
-            />
-            <Route
-              path="/pricing"
-              element={
-                <LandingPage
-                  onEnterApp={() => window.location.assign('/admin/dashboard')}
-                  onOpenSignIn={() => window.location.assign('/login')}
-                  onOpenRegister={() => window.location.assign('/register')}
-                />
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <LandingPage
-                  onEnterApp={() => window.location.assign('/admin/dashboard')}
-                  onOpenSignIn={() => window.location.assign('/login')}
-                  onOpenRegister={() => window.location.assign('/register')}
-                />
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <LandingPage
-                  onEnterApp={() => window.location.assign('/admin/dashboard')}
-                  onOpenSignIn={() => window.location.assign('/login')}
-                  onOpenRegister={() => window.location.assign('/register')}
-                />
-              }
-            />
+            <Route path="/" element={<LandingRouteWrapper />} />
+            <Route path="/features" element={<LandingRouteWrapper />} />
+            <Route path="/pricing" element={<LandingRouteWrapper />} />
+            <Route path="/about" element={<LandingRouteWrapper />} />
+            <Route path="/contact" element={<LandingRouteWrapper />} />
 
             {/* Auth Sign In / Register */}
-            <Route
-              path="/login"
-              element={
-                <AuthPage
-                  initialMode="signin"
-                  onSuccess={() => window.location.assign('/admin/dashboard')}
-                  onBackToHome={() => window.location.assign('/')}
-                />
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <AuthPage
-                  initialMode="register"
-                  onSuccess={() => window.location.assign('/admin/dashboard')}
-                  onBackToHome={() => window.location.assign('/')}
-                />
-              }
-            />
+            <Route path="/login" element={<AuthRouteWrapper initialMode="signin" />} />
+            <Route path="/register" element={<AuthRouteWrapper initialMode="register" />} />
 
-            {/* Core Application Hub */}
+            {/* Core Application Hub & All Direct Role Routes */}
+            <Route path="/admin/*" element={<MainApp />} />
+            <Route path="/trainer/*" element={<MainApp />} />
+            <Route path="/reception/*" element={<MainApp />} />
+            <Route path="/member/*" element={<MainApp />} />
             <Route path="/*" element={<MainApp />} />
           </Routes>
         </ToastProvider>
