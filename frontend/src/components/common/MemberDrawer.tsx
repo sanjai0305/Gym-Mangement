@@ -69,32 +69,32 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" onClick={onClose} />
       <div
         id="member-detail-drawer"
-        className="fixed inset-y-0 right-0 w-full max-w-md bg-[#0e162b] border-l border-[#202c4b] shadow-2xl z-50 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200 text-[#dae2fd]"
+        className="fixed inset-y-0 right-0 w-full sm:max-w-md bg-[#0e162b] border-l border-[#202c4b] shadow-2xl z-50 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200 text-[#dae2fd]"
       >
         {/* Drawer Header */}
         <div>
-          <div className="p-6 border-b border-[#1c2744] flex items-center justify-between">
+          <div className="p-4 sm:p-6 border-b border-[#1c2744] flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-xl">badge</span>
               <h2 className="font-display font-extrabold text-base text-white">Member Dossier</h2>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-[#7382a5] hover:text-white hover:bg-[#18233e] transition"
+              className="p-2 rounded-lg text-[#7382a5] hover:text-white hover:bg-[#18233e] transition min-h-[38px] min-w-[38px] flex items-center justify-center"
             >
               <span className="material-symbols-outlined text-xl">close</span>
             </button>
           </div>
 
           {feedbackMessage && (
-            <div className="mx-6 mt-4 p-3 rounded-xl bg-primary/10 border border-primary/30 text-primary text-xs flex items-center gap-2 animate-in fade-in">
+            <div className="mx-4 sm:mx-6 mt-4 p-3 rounded-xl bg-primary/10 border border-primary/30 text-primary text-xs flex items-center gap-2 animate-in fade-in">
               <span className="material-symbols-outlined text-base">check_circle</span>
               <span>{feedbackMessage}</span>
             </div>
           )}
 
           {/* Profile Overview */}
-          <div className="p-6 border-b border-[#1c2744]">
+          <div className="p-4 sm:p-6 border-b border-[#1c2744]">
             <div className="flex items-center gap-4 mb-4">
               {member.profileImage ? (
                 <img

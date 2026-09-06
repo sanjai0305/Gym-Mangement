@@ -60,9 +60,9 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#0e162b] border border-[#233155] rounded-3xl p-6 shadow-2xl text-[#dae2fd] animate-in zoom-in-95 duration-150">
-        <div className="flex items-center justify-between pb-4 border-b border-[#1b2542]">
+    <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="w-[calc(100%-24px)] sm:max-w-md bg-[#0e162b] border border-[#233155] rounded-3xl p-4 sm:p-6 shadow-2xl text-[#dae2fd] animate-in zoom-in-95 duration-150 my-auto max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#1b2542]">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl animate-pulse">
               qr_code_scanner
@@ -77,8 +77,8 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
         </div>
 
         {/* Viewfinder simulation */}
-        <div className="my-5 relative rounded-2xl overflow-hidden bg-[#060c1c] border-2 border-dashed border-[#25365e] p-6 text-center">
-          <div className="w-36 h-36 mx-auto border-2 border-primary/60 rounded-xl relative flex items-center justify-center bg-primary/5">
+        <div className="my-4 sm:my-5 relative rounded-2xl overflow-hidden bg-[#060c1c] border-2 border-dashed border-[#25365e] p-4 sm:p-6 text-center">
+          <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto border-2 border-primary/60 rounded-xl relative flex items-center justify-center bg-primary/5">
             {/* Corner accents */}
             <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary" />
             <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary" />
@@ -87,10 +87,10 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
 
             {/* Laser scanning line */}
             <div className="absolute inset-x-0 h-0.5 bg-primary/80 shadow-[0_0_12px_#ccff80] animate-[bounce_2s_infinite]" />
-            <span className="material-symbols-outlined text-4xl text-primary/40">barcode_scanner</span>
+            <span className="material-symbols-outlined text-3xl sm:text-4xl text-primary/40">barcode_scanner</span>
           </div>
 
-          <p className="text-xs text-[#7e8cae] mt-3 font-mono">
+          <p className="text-[11px] sm:text-xs text-[#7e8cae] mt-2 sm:mt-3 font-mono">
             Optical Sensor & RFID Reader Online
           </p>
         </div>
@@ -98,7 +98,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
         {/* Access Status Banner */}
         {result && (
           <div
-            className={`p-4 mb-4 rounded-2xl border flex items-center gap-3 animate-in fade-in duration-150 ${
+            className={`p-3.5 sm:p-4 mb-4 rounded-2xl border flex items-center gap-3 animate-in fade-in duration-150 ${
               result.success
                 ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
                 : 'bg-rose-500/15 border-rose-500/40 text-rose-300'
@@ -120,7 +120,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
             <select
               value={turnstile}
               onChange={(e) => setTurnstile(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-[#121b33] border border-[#222f51] text-xs text-white focus:outline-none focus:border-primary"
+              className="w-full px-3 py-2.5 rounded-xl bg-[#121b33] border border-[#222f51] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
             >
               <option value="Turnstile #01 - North Entrance">Turnstile #01 - North Entrance</option>
               <option value="Turnstile #02 - VIP Fast Track">Turnstile #02 - VIP Fast Track</option>
@@ -139,12 +139,12 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
                 value={memberCode}
                 onChange={(e) => setMemberCode(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleScanOrSubmit()}
-                className="flex-1 px-3 py-2.5 rounded-xl bg-[#121b33] border border-[#222f51] text-xs font-mono text-white placeholder-[#515e7f] focus:outline-none focus:border-primary uppercase"
+                className="flex-1 px-3 py-2.5 rounded-xl bg-[#121b33] border border-[#222f51] text-xs font-mono text-white placeholder-[#515e7f] focus:outline-none focus:border-primary uppercase min-h-[42px]"
               />
               <button
                 onClick={() => handleScanOrSubmit()}
                 disabled={loading || !memberCode.trim()}
-                className="px-4 py-2.5 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs hover:brightness-110 disabled:opacity-50 transition active:scale-95"
+                className="px-4 py-2.5 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs hover:brightness-110 disabled:opacity-50 transition active:scale-95 min-h-[42px]"
               >
                 {loading ? 'Verifying...' : 'Check In'}
               </button>
@@ -156,7 +156,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
             <div className="text-[11px] font-semibold text-[#667497] uppercase tracking-wider mb-2">
               Quick Simulate (Demo Passes)
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {sampleMembers.map((m) => (
                 <button
                   key={m.code}
@@ -165,7 +165,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
                     setMemberCode(m.code);
                     handleScanOrSubmit(m.code);
                   }}
-                  className="p-2 rounded-xl bg-[#121c35] hover:bg-[#182649] border border-[#202e50] text-left transition"
+                  className="p-2 sm:p-2.5 rounded-xl bg-[#121c35] hover:bg-[#182649] border border-[#202e50] text-left transition min-h-[40px]"
                 >
                   <div className="font-mono text-primary font-bold text-xs">{m.code}</div>
                   <div className="text-[10px] text-[#8695b7] truncate">{m.name}</div>

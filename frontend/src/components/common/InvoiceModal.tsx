@@ -24,23 +24,23 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ invoiceNumber, onClo
   if (!invoiceNumber) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="w-full max-w-2xl bg-[#0f172a] border border-[#233152] rounded-3xl shadow-2xl p-8 text-[#dae2fd] my-8 animate-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="w-[calc(100%-24px)] sm:max-w-2xl bg-[#0f172a] border border-[#233152] rounded-3xl shadow-2xl p-4 sm:p-8 text-[#dae2fd] my-auto max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-150">
         {/* Modal Top Actions */}
-        <div className="flex items-center justify-between pb-6 border-b border-[#1e2c4d]">
+        <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-[#1e2c4d]">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl">receipt_long</span>
-            <h2 className="font-display font-extrabold text-lg text-white">Commercial Tax Invoice</h2>
+            <h2 className="font-display font-extrabold text-base sm:text-lg text-white">Tax Invoice</h2>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#172340] hover:bg-[#1e2f57] border border-[#263760] text-xs font-semibold text-white transition"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#172340] hover:bg-[#1e2f57] border border-[#263760] text-xs font-semibold text-white transition min-h-[38px]"
             >
               <span className="material-symbols-outlined text-sm">print</span>
               <span>Print / PDF</span>
             </button>
-            <button onClick={onClose} className="p-1 rounded-lg text-[#7382a5] hover:text-white">
+            <button onClick={onClose} className="p-1.5 rounded-lg text-[#7382a5] hover:text-white min-h-[38px] min-w-[38px] flex items-center justify-center">
               <span className="material-symbols-outlined">close</span>
             </button>
           </div>
@@ -49,15 +49,15 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ invoiceNumber, onClo
         {loading ? (
           <div className="py-20 text-center text-xs text-[#7383a8]">Loading invoice data...</div>
         ) : invoice ? (
-          <div id="printable-invoice" className="pt-6 space-y-6">
+          <div id="printable-invoice" className="pt-4 sm:pt-6 space-y-4 sm:space-y-6">
             {/* Gym Header & Invoice Metas */}
-            <div className="flex flex-col md:flex-row justify-between gap-6">
+            <div className="flex flex-col md:flex-row justify-between gap-4 sm:gap-6">
               <div>
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary text-[#0b1326] flex items-center justify-center font-extrabold text-sm">
+                  <div className="w-8 h-8 rounded-lg bg-primary text-[#0b1326] flex items-center justify-center font-extrabold text-sm shrink-0">
                     FC
                   </div>
-                  <span className="font-display font-extrabold text-xl text-white tracking-wider">
+                  <span className="font-display font-extrabold text-lg sm:text-xl text-white tracking-wider">
                     {invoice.gym?.name}
                   </span>
                 </div>
@@ -68,7 +68,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ invoiceNumber, onClo
                 </div>
               </div>
 
-              <div className="text-right space-y-1">
+              <div className="text-left md:text-right space-y-1 border-t md:border-t-0 border-[#1c2742] pt-2 md:pt-0">
                 <div className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-mono font-bold text-xs uppercase tracking-wider">
                   Payment Status: {invoice.status}
                 </div>
@@ -83,7 +83,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ invoiceNumber, onClo
             </div>
 
             {/* Billed To */}
-            <div className="p-4 rounded-2xl bg-[#131d36] border border-[#202d4f] flex flex-col md:flex-row justify-between gap-4">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#131d36] border border-[#202d4f] flex flex-col md:flex-row justify-between gap-4">
               <div>
                 <span className="text-[11px] font-semibold text-[#7384a8] uppercase tracking-wider block mb-1">
                   Billed Client:
@@ -105,8 +105,8 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ invoiceNumber, onClo
             </div>
 
             {/* Line Items Table */}
-            <div className="border border-[#202d4f] rounded-2xl overflow-hidden">
-              <table className="w-full text-xs text-left">
+            <div className="border border-[#202d4f] rounded-2xl overflow-x-auto">
+              <table className="w-full text-xs text-left min-w-[400px]">
                 <thead className="bg-[#141f39] text-[#7889ae] uppercase text-[10px] tracking-wider border-b border-[#202d4f]">
                   <tr>
                     <th className="p-3.5">Service Description</th>

@@ -63,20 +63,20 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="w-full max-w-xl bg-[#0e162b] border border-[#233154] rounded-2xl shadow-2xl p-6 text-[#dae2fd] my-8 animate-in zoom-in-95 duration-150">
-        <div className="flex items-center justify-between pb-4 border-b border-[#1c2744]">
+    <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="w-[calc(100%-24px)] sm:max-w-xl bg-[#0e162b] border border-[#233154] rounded-3xl shadow-2xl p-4 sm:p-6 text-[#dae2fd] my-auto max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-150">
+        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#1c2744] shrink-0">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl">person_add</span>
-            <h2 className="font-display font-extrabold text-lg text-white">Enroll New Member</h2>
+            <h2 className="font-display font-extrabold text-base sm:text-lg text-white">Enroll New Member</h2>
           </div>
           <button onClick={onClose} className="text-[#6f7e9f] hover:text-white p-1">
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-4 pt-4 overflow-y-auto pr-1 flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">Full Name *</label>
               <input
@@ -85,7 +85,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
                 placeholder="e.g. Jessica Sterling"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary min-h-[42px]"
               />
             </div>
 
@@ -97,7 +97,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
                 placeholder="jessica@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary min-h-[42px]"
               />
             </div>
 
@@ -109,7 +109,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
                 placeholder="+1 (555) 019-4821"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary min-h-[42px]"
               />
             </div>
 
@@ -118,7 +118,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
               <select
                 value={formData.gender}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -127,13 +127,13 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">Membership Tier</label>
               <select
                 value={formData.planId}
                 onChange={(e) => setFormData({ ...formData, planId: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
               >
                 {plans.map((p) => (
                   <option key={p._id} value={p._id}>
@@ -148,7 +148,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
               <select
                 value={formData.assignedTrainerId}
                 onChange={(e) => setFormData({ ...formData, assignedTrainerId: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
               >
                 <option value="">-- No Coach Assigned --</option>
                 {trainers.map((t) => (
@@ -160,14 +160,14 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">Weight (kg)</label>
               <input
                 type="number"
                 value={formData.weightKg}
                 onChange={(e) => setFormData({ ...formData, weightKg: Number(e.target.value) })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
               />
             </div>
             <div>
@@ -176,7 +176,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
                 type="number"
                 value={formData.heightCm}
                 onChange={(e) => setFormData({ ...formData, heightCm: Number(e.target.value) })}
-                className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
               placeholder="e.g. John Sterling (+1 555-019-4822)"
               value={formData.emergencyContact}
               onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
-              className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary min-h-[42px]"
             />
           </div>
 
@@ -199,22 +199,22 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose,
               placeholder="Fitness targets, medical clearance, turnstile preferences..."
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary"
+              className="w-full px-3.5 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white placeholder-[#536183] focus:outline-none focus:border-primary"
             />
           </div>
 
-          <div className="pt-3 border-t border-[#1c2744] flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-[#1c2744] flex flex-col-reverse sm:flex-row items-center justify-end gap-2 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs text-[#808fae] hover:text-white transition"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs text-[#808fae] hover:text-white transition min-h-[42px]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50 min-h-[42px]"
             >
               {loading ? 'Creating Member...' : 'Enroll Member & Issue ID'}
             </button>

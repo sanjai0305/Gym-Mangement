@@ -79,14 +79,14 @@ export const ReportsPage: React.FC = () => {
   const COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899'];
 
   return (
-    <div className="p-4 sm:p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 max-w-7xl mx-auto">
       {/* Top Banner & Export Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-[#0e172e] to-[#13203f] border border-slate-800 rounded-2xl p-6 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-[#0e172e] to-[#13203f] border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl">
         <div>
           <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold tracking-wider uppercase mb-1">
-            <Sparkles className="w-4 h-4" /> Performance Analytics & Telemetry
+            <Sparkles className="w-4 h-4 shrink-0" /> Performance Analytics & Telemetry
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+          <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight">
             Financial & Operational Report
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
@@ -94,20 +94,20 @@ export const ReportsPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-3.5 py-2 bg-[#14203d] hover:bg-[#1b2b52] border border-slate-700/60 rounded-xl text-xs font-semibold text-slate-200 transition shadow-sm"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2.5 bg-[#14203d] hover:bg-[#1b2b52] border border-slate-700/60 rounded-xl text-xs font-semibold text-slate-200 transition shadow-sm min-h-[42px]"
           >
             <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
             <span>Export CSV</span>
           </button>
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-[#070e1e] rounded-xl text-xs font-bold transition shadow-lg shadow-emerald-500/20"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-[#070e1e] rounded-xl text-xs font-bold transition shadow-lg shadow-emerald-500/20 min-h-[42px]"
           >
             <Printer className="w-4 h-4" />
-            <span>Print Report</span>
+            <span>Print</span>
           </button>
         </div>
       </div>

@@ -99,21 +99,21 @@ export const WorkoutsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
       {/* Header & New Routine Button */}
-      <div className="p-6 rounded-3xl bg-[#0f182e] border border-[#202c4b] flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="p-4 sm:p-6 rounded-3xl bg-[#0f182e] border border-[#202c4b] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="font-display font-bold text-base text-white">
+          <h3 className="font-display font-bold text-base sm:text-lg text-white">
             Performance Workout Builder
           </h3>
-          <p className="text-xs text-[#7d8dae]">
+          <p className="text-xs text-[#7d8dae] mt-0.5">
             Prescribe tailored exercise regimens, track weight progression, and rest intervals.
           </p>
         </div>
 
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition active:scale-95 shrink-0"
+          className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition active:scale-95 shrink-0 min-h-[44px]"
         >
           <span className="material-symbols-outlined text-base">add</span>
           <span>Assign New Routine</span>
@@ -121,7 +121,7 @@ export const WorkoutsPage: React.FC = () => {
       </div>
 
       {/* Main Grid: Plan Selector + Selected Routine Detail View */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Plans List */}
         <div className="lg:col-span-5 space-y-3">
           <div className="text-xs font-semibold text-[#7e8eb2] uppercase tracking-wider mb-2">
@@ -246,19 +246,19 @@ export const WorkoutsPage: React.FC = () => {
 
       {/* Create Workout Plan Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-2xl bg-[#0e162b] border border-[#233154] rounded-3xl p-6 shadow-2xl space-y-4 my-8 text-[#dae2fd]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1c2744]">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="w-[calc(100%-24px)] sm:max-w-2xl bg-[#0e162b] border border-[#233154] rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4 my-auto max-h-[90vh] flex flex-col text-[#dae2fd]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1c2744] shrink-0">
               <h3 className="font-display font-bold text-base text-white">Build Workout Routine</h3>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="text-[#6e7d9f] hover:text-white"
+                className="text-[#6e7d9f] hover:text-white p-1"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleCreatePlan} className="space-y-4">
+            <form onSubmit={handleCreatePlan} className="space-y-4 overflow-y-auto pr-1 flex-1">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">
@@ -267,7 +267,7 @@ export const WorkoutsPage: React.FC = () => {
                   <select
                     value={memberId}
                     onChange={(e) => setMemberId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                   >
                     {members.map((m) => (
                       <option key={m._id} value={m._id}>
@@ -286,7 +286,7 @@ export const WorkoutsPage: React.FC = () => {
                     required
                     value={planName}
                     onChange={(e) => setPlanName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                   />
                 </div>
               </div>
@@ -299,7 +299,7 @@ export const WorkoutsPage: React.FC = () => {
                   type="text"
                   value={goal}
                   onChange={(e) => setGoal(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
@@ -312,18 +312,18 @@ export const WorkoutsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleAddExerciseRow}
-                    className="text-xs text-primary hover:underline font-semibold flex items-center gap-1"
+                    className="text-xs text-primary hover:underline font-semibold flex items-center gap-1 min-h-[36px]"
                   >
                     <span className="material-symbols-outlined text-sm">add</span>
                     <span>Add Movement</span>
                   </button>
                 </div>
 
-                <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                   {exercises.map((ex, index) => (
                     <div
                       key={ex.id}
-                      className="p-3.5 rounded-2xl bg-[#131d36] border border-[#202d4f] space-y-2.5"
+                      className="p-3 sm:p-3.5 rounded-2xl bg-[#131d36] border border-[#202d4f] space-y-2.5"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <input
@@ -332,61 +332,61 @@ export const WorkoutsPage: React.FC = () => {
                           placeholder="Movement Name"
                           value={ex.name}
                           onChange={(e) => handleExerciseChange(index, 'name', e.target.value)}
-                          className="flex-1 px-3 py-1.5 rounded-xl bg-[#0e162a] border border-[#233256] text-xs text-white focus:outline-none focus:border-primary font-semibold"
+                          className="flex-1 px-3 py-2 rounded-xl bg-[#0e162a] border border-[#233256] text-xs text-white focus:outline-none focus:border-primary font-semibold min-h-[38px]"
                         />
                         <button
                           type="button"
                           onClick={() => handleRemoveExercise(index)}
-                          className="text-[#647496] hover:text-rose-400 p-1"
+                          className="text-[#647496] hover:text-rose-400 p-2 min-h-[38px] min-w-[38px] flex items-center justify-center"
                           title="Remove movement"
                         >
                           <span className="material-symbols-outlined text-base">delete</span>
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         <div>
-                          <label className="text-[10px] text-[#7181a4] block">Sets</label>
+                          <label className="text-[10px] text-[#7181a4] block mb-0.5">Sets</label>
                           <input
                             type="number"
                             value={ex.sets}
                             onChange={(e) =>
                               handleExerciseChange(index, 'sets', Number(e.target.value))
                             }
-                            className="w-full px-2 py-1 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center"
+                            className="w-full px-2 py-1.5 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center min-h-[36px]"
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-[#7181a4] block">Reps</label>
+                          <label className="text-[10px] text-[#7181a4] block mb-0.5">Reps</label>
                           <input
                             type="number"
                             value={ex.reps}
                             onChange={(e) =>
                               handleExerciseChange(index, 'reps', Number(e.target.value))
                             }
-                            className="w-full px-2 py-1 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center"
+                            className="w-full px-2 py-1.5 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center min-h-[36px]"
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-[#7181a4] block">Weight (kg)</label>
+                          <label className="text-[10px] text-[#7181a4] block mb-0.5">Weight (kg)</label>
                           <input
                             type="number"
                             value={ex.weightKg || 0}
                             onChange={(e) =>
                               handleExerciseChange(index, 'weightKg', Number(e.target.value))
                             }
-                            className="w-full px-2 py-1 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center"
+                            className="w-full px-2 py-1.5 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center min-h-[36px]"
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-[#7181a4] block">Rest (sec)</label>
+                          <label className="text-[10px] text-[#7181a4] block mb-0.5">Rest (sec)</label>
                           <input
                             type="number"
                             value={ex.restSeconds}
                             onChange={(e) =>
                               handleExerciseChange(index, 'restSeconds', Number(e.target.value))
                             }
-                            className="w-full px-2 py-1 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center"
+                            className="w-full px-2 py-1.5 rounded-lg bg-[#0e162a] border border-[#233256] text-xs text-white font-mono text-center min-h-[36px]"
                           />
                         </div>
                       </div>
@@ -396,24 +396,24 @@ export const WorkoutsPage: React.FC = () => {
                         placeholder="Form cues & tempo notes..."
                         value={ex.instructions}
                         onChange={(e) => handleExerciseChange(index, 'instructions', e.target.value)}
-                        className="w-full px-2.5 py-1 rounded-xl bg-[#0e162a] border border-[#233256] text-xs text-[#9eb0d6] placeholder-[#4e5c7d]"
+                        className="w-full px-2.5 py-2 rounded-xl bg-[#0e162a] border border-[#233256] text-xs text-[#9eb0d6] placeholder-[#4e5c7d] min-h-[38px]"
                       />
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="pt-2 flex justify-end gap-2 border-t border-[#1c2744]">
+              <div className="pt-3 flex flex-col-reverse sm:flex-row justify-end gap-2 border-t border-[#1c2744] shrink-0">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-3 py-2 rounded-xl text-xs text-[#7e8eb2]"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs text-[#7e8eb2] hover:bg-[#152038] min-h-[42px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs hover:brightness-110"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs hover:brightness-110 min-h-[42px]"
                 >
                   Publish Routine to Member
                 </button>

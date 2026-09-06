@@ -99,15 +99,15 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 space-y-8 max-w-5xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-8 max-w-5xl mx-auto text-[#dae2fd]">
       {/* Facility Profile Form */}
-      <div className="p-8 rounded-3xl bg-[#0e172c] border border-[#202c4b] space-y-6">
+      <div className="p-4 sm:p-8 rounded-3xl bg-[#0e172c] border border-[#202c4b] space-y-4 sm:space-y-6">
         <div className="pb-4 border-b border-[#1b2746] flex items-center justify-between">
           <div>
-            <h3 className="font-display font-bold text-lg text-white">
+            <h3 className="font-display font-bold text-base sm:text-lg text-white">
               Facility Configuration & Branding
             </h3>
-            <p className="text-xs text-[#7c8cae]">
+            <p className="text-xs text-[#7c8cae] mt-0.5">
               Manage public identifiers, turnstile timezone, and receipt formatting.
             </p>
           </div>
@@ -131,7 +131,7 @@ export const SettingsPage: React.FC = () => {
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#213054] text-xs text-white focus:outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#213054] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
               />
             </div>
 
@@ -217,7 +217,7 @@ export const SettingsPage: React.FC = () => {
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50 min-h-[42px]"
             >
               {saving ? 'Updating...' : 'Save Configuration'}
             </button>
@@ -226,18 +226,18 @@ export const SettingsPage: React.FC = () => {
       </div>
 
       {/* Membership Plans Tiers Manager */}
-      <div className="p-8 rounded-3xl bg-[#0e172c] border border-[#202c4b] space-y-6">
-        <div className="pb-4 border-b border-[#1b2746] flex items-center justify-between">
+      <div className="p-4 sm:p-8 rounded-3xl bg-[#0e172c] border border-[#202c4b] space-y-4 sm:space-y-6">
+        <div className="pb-4 border-b border-[#1b2746] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="font-display font-bold text-lg text-white">Membership Plans & Tiers</h3>
-            <p className="text-xs text-[#7c8cae]">
+            <h3 className="font-display font-bold text-base sm:text-lg text-white">Membership Plans & Tiers</h3>
+            <p className="text-xs text-[#7c8cae] mt-0.5">
               Configure pricing, durations, and access privileges for new enrollments.
             </p>
           </div>
 
           <button
             onClick={() => setShowPlanModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#162343] hover:bg-[#1f305a] border border-[#263762] text-xs font-semibold text-white transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#162343] hover:bg-[#1f305a] border border-[#263762] text-xs font-semibold text-white transition min-h-[42px]"
           >
             <span className="material-symbols-outlined text-base">add</span>
             <span>New Tier</span>
@@ -248,7 +248,7 @@ export const SettingsPage: React.FC = () => {
           {plans.map((p) => (
             <div
               key={p._id}
-              className="p-5 rounded-2xl bg-[#121c35] border border-[#1e2d4e] flex flex-col justify-between space-y-4"
+              className="p-4 sm:p-5 rounded-2xl bg-[#121c35] border border-[#1e2d4e] flex flex-col justify-between space-y-4"
             >
               <div>
                 <div className="flex items-center justify-between">
@@ -277,7 +277,7 @@ export const SettingsPage: React.FC = () => {
       </div>
 
       {/* Danger / Demo Reset Zone */}
-      <div className="p-8 rounded-3xl bg-[#181124] border border-rose-500/30 space-y-4">
+      <div className="p-4 sm:p-8 rounded-3xl bg-[#181124] border border-rose-500/30 space-y-4">
         <div>
           <h3 className="font-display font-bold text-base text-rose-300">
             Database Sandbox & Demo Reset
@@ -291,7 +291,7 @@ export const SettingsPage: React.FC = () => {
         <button
           onClick={handleResetDemo}
           disabled={resetting}
-          className="px-5 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/40 text-xs font-semibold transition disabled:opacity-50 flex items-center gap-2"
+          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/40 text-xs font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2 min-h-[42px]"
         >
           <span className="material-symbols-outlined text-base">restart_alt</span>
           <span>{resetting ? 'Resetting Sandbox...' : 'Reset Sandbox to Default Data'}</span>
@@ -300,19 +300,19 @@ export const SettingsPage: React.FC = () => {
 
       {/* Add Plan Modal */}
       {showPlanModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0e162b] border border-[#233154] rounded-2xl p-6 shadow-2xl space-y-4 text-[#dae2fd]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1c2744]">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="w-[calc(100%-24px)] sm:max-w-md bg-[#0e162b] border border-[#233154] rounded-2xl p-4 sm:p-6 shadow-2xl space-y-4 my-auto max-h-[90vh] flex flex-col text-[#dae2fd]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1c2744] shrink-0">
               <h3 className="font-display font-bold text-base text-white">Create Membership Tier</h3>
               <button
                 onClick={() => setShowPlanModal(false)}
-                className="text-[#6e7d9f] hover:text-white"
+                className="text-[#6e7d9f] hover:text-white p-1"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleCreatePlan} className="space-y-3">
+            <form onSubmit={handleCreatePlan} className="space-y-3 overflow-y-auto pr-1 flex-1">
               <div>
                 <label className="text-xs font-semibold text-[#8a9bbd] block mb-1">Tier Name</label>
                 <input
@@ -320,11 +320,11 @@ export const SettingsPage: React.FC = () => {
                   required
                   value={newPlan.name}
                   onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#8a9bbd] block mb-1">
                     Price ({form.currency})
@@ -334,7 +334,7 @@ export const SettingsPage: React.FC = () => {
                     required
                     value={newPlan.price}
                     onChange={(e) => setNewPlan({ ...newPlan, price: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                   />
                 </div>
 
@@ -349,7 +349,7 @@ export const SettingsPage: React.FC = () => {
                     onChange={(e) =>
                       setNewPlan({ ...newPlan, durationMonths: Number(e.target.value) })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                   />
                 </div>
               </div>
@@ -362,21 +362,21 @@ export const SettingsPage: React.FC = () => {
                   type="text"
                   value={newPlan.description}
                   onChange={(e) => setNewPlan({ ...newPlan, description: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-2">
+              <div className="pt-3 flex flex-col-reverse sm:flex-row justify-end gap-2 border-t border-[#1c2744] shrink-0">
                 <button
                   type="button"
                   onClick={() => setShowPlanModal(false)}
-                  className="px-3 py-2 rounded-xl text-xs text-[#7e8eb2]"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs text-[#7e8eb2] hover:bg-[#152038] min-h-[42px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs hover:brightness-110"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs hover:brightness-110 min-h-[42px]"
                 >
                   Save Tier
                 </button>

@@ -69,14 +69,14 @@ export const ClassesPage: React.FC = () => {
   const days = ['Today', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
       {/* Day Selector Navigation */}
-      <div className="p-4 rounded-2xl bg-[#0f182e] border border-[#202c4b] flex items-center gap-2 overflow-x-auto">
+      <div className="p-2.5 sm:p-4 rounded-2xl bg-[#0f182e] border border-[#202c4b] flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
         {days.map((d) => (
           <button
             key={d}
             onClick={() => setSelectedDay(d)}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition min-h-[38px] ${
               selectedDay === d
                 ? 'bg-primary text-[#0b1326] shadow-md shadow-primary/20'
                 : 'text-[#8596bd] hover:bg-[#141f39] hover:text-white'
@@ -88,7 +88,7 @@ export const ClassesPage: React.FC = () => {
       </div>
 
       {/* Main Grid: Class Timetable + Active Roster Inspector */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Classes List */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">

@@ -72,12 +72,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#070e1e] text-[#dae2fd] flex flex-col justify-between p-6">
+    <div className="min-h-screen bg-[#070e1e] text-[#dae2fd] flex flex-col justify-between p-3 sm:p-6">
       {/* Top Bar */}
-      <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
+      <div className="flex items-center justify-between max-w-5xl mx-auto w-full py-2">
         <button
           onClick={onBackToHome}
-          className="flex items-center gap-2 text-xs font-semibold text-[#8b9bc1] hover:text-white transition"
+          className="flex items-center gap-1.5 sm:gap-2 text-xs font-semibold text-[#8b9bc1] hover:text-white transition min-h-[38px]"
         >
           <span className="material-symbols-outlined text-base">arrow_back</span>
           <span>Back to Home</span>
@@ -92,12 +92,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       </div>
 
       {/* Main Content Card */}
-      <div className="max-w-4xl mx-auto w-full my-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div className="max-w-4xl mx-auto w-full my-4 sm:my-8 grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-start">
         {/* Left Side: Real Credentials Form */}
-        <div className="md:col-span-7 bg-[#0d162b] border border-[#202e52] rounded-3xl p-8 shadow-2xl space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-[#1b2746]">
+        <div className="md:col-span-7 bg-[#0d162b] border border-[#202e52] rounded-3xl p-4 sm:p-8 shadow-2xl space-y-4 sm:space-y-6">
+          <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#1b2746]">
             <div>
-              <h2 className="font-display font-extrabold text-2xl text-white">
+              <h2 className="font-display font-extrabold text-xl sm:text-2xl text-white">
                 {mode === 'signin' ? 'Access Facility Portal' : 'Register Gym Facility'}
               </h2>
               <p className="text-xs text-[#8090b4] mt-1">
@@ -127,7 +127,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   placeholder="owner@fitcore.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
@@ -142,14 +142,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50 min-h-[44px]"
               >
                 {loading ? 'Authenticating...' : 'Sign In to Hub'}
               </button>
@@ -177,11 +177,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   placeholder="e.g. Iron & Pulse Athletic Club"
                   value={regData.gymName}
                   onChange={(e) => setRegData({ ...regData, gymName: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#8697bd] block mb-1">
                     Owner Name *
@@ -192,7 +192,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     placeholder="Marcus Vance"
                     value={regData.ownerName}
                     onChange={(e) => setRegData({ ...regData, ownerName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                   />
                 </div>
                 <div>
@@ -205,7 +205,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     placeholder="+1 (555) 019-2831"
                     value={regData.phone}
                     onChange={(e) => setRegData({ ...regData, phone: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                   />
                 </div>
               </div>
@@ -220,7 +220,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   placeholder="owner@mygym.com"
                   value={regData.email}
                   onChange={(e) => setRegData({ ...regData, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
@@ -232,14 +232,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   placeholder="Minimum 8 characters"
                   value={regData.password}
                   onChange={(e) => setRegData({ ...regData, password: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#121c35] border border-[#223053] text-xs text-white placeholder-[#516082] focus:outline-none focus:border-primary min-h-[42px]"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50 min-h-[44px]"
               >
                 {loading ? 'Bootstrapping Facility...' : 'Create Gym & Launch SaaS'}
               </button>

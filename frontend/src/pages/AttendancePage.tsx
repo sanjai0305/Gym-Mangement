@@ -152,23 +152,24 @@ export const AttendancePage: React.FC<AttendancePageProps> = ({
         </div>
       )}
 
-      {/* Attendance Logs Table */}
+      {/* Attendance Logs Section */}
       <div className="border border-[#202c4b] rounded-3xl bg-[#0e172c] overflow-hidden shadow-xl">
-        <div className="p-5 border-b border-[#1f2c4b] flex items-center justify-between">
+        <div className="p-4 sm:p-5 border-b border-[#1f2c4b] flex items-center justify-between">
           <div>
             <h4 className="font-display font-bold text-sm text-white">Daily Access Stream</h4>
             <p className="text-xs text-[#7b8bae]">Timestamped turnstile entries & exits</p>
           </div>
           <button
             onClick={fetchAttendance}
-            className="p-2 rounded-xl text-[#7282a5] hover:text-white hover:bg-[#172340] transition"
+            className="p-2 rounded-xl text-[#7282a5] hover:text-white hover:bg-[#172340] transition min-h-[36px] min-w-[36px] flex items-center justify-center"
             title="Refresh stream"
           >
             <span className="material-symbols-outlined text-base">refresh</span>
           </button>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-xs text-left">
             <thead className="bg-[#121b33] text-[#7a8ba8] uppercase text-[10px] tracking-wider border-b border-[#1f2c4b]">
               <tr>
@@ -257,6 +258,78 @@ export const AttendancePage: React.FC<AttendancePageProps> = ({
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Cards View */}
+        <div className="md:hidden p-3 space-y-3">
+          {loading ? (
+            <div className="p-8 text-center text-xs text-[#707f9f]">Loading turnstile logs...</div>
+          ) : logs.length === 0 ? (
+            <div className="p-8 text-center text-xs text-[#707f9f]">No turnstile logs recorded today.</div>
+          ) : (
+            logs.map((log) => (
+              <div
+                key={log._id}
+                className="p-3.5 rounded-2xl bg-[#121c35] border border-[#1e2d4e] space-y-2.5 shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div
+                    onClick={() => onSelectMember(log.memberId)}
+                    className="flex items-center gap-2.5 min-w-0 cursor-pointer"
+                  >
+                    {log.profileImage ? (
+                      <img
+                        src={log.profileImage}
+                        alt={log.memberName}
+                        className="w-8 h-8 rounded-lg object-cover border border-primary/30 shrink-0"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary font-bold text-xs flex items-center justify-center shrink-0">
+                        {log.memberName?.[0] || 'M'}
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <div className="font-bold text-white text-xs truncate">{log.memberName}</div>
+                      <div className="font-mono text-[10px] text-primary">{log.memberCode}</div>
+                    </div>
+                  </div>
+
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#182649] text-primary border border-primary/30 font-mono shrink-0">
+                    {log.method}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-[11px] pt-2 border-t border-[#1a2748]">
+                  <div>
+                    <span className="text-[#6b7b9e] block text-[9px]">GATE</span>
+                    <span className="text-[#8a9bbd] truncate block">{log.turnstile || 'Turnstile #01'}</span>
+                  </div>
+                  <div>
+                    <span className="text-[#6b7b9e] block text-[9px]">CHECK-IN</span>
+                    <span className="font-mono text-white">
+                      {new Date(log.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-[10px] text-[#7888ab]">
+                    {log.durationMinutes ? `${log.durationMinutes} mins elapsed` : 'Currently on floor'}
+                  </span>
+                  {!log.checkOut ? (
+                    <button
+                      onClick={() => handleCheckOut(log._id)}
+                      className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 text-xs font-semibold"
+                    >
+                      Check Out
+                    </button>
+                  ) : (
+                    <span className="text-[#647496] text-[10px] font-mono">Departed</span>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

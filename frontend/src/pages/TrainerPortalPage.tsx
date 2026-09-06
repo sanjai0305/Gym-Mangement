@@ -68,24 +68,24 @@ export const TrainerPortalPage: React.FC<TrainerPortalPageProps> = ({
   };
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-8 max-w-7xl mx-auto text-[#dae2fd]">
       {/* Coach Bio Card */}
-      <div className="p-6 rounded-3xl bg-[#0f182e] border border-[#202c4b] flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-4">
+      <div className="p-4 sm:p-6 rounded-3xl bg-[#0f182e] border border-[#202c4b] flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+        <div className="flex items-center gap-3 sm:gap-4">
           {trainerInfo?.avatar ? (
             <img
               src={trainerInfo.avatar}
               alt={trainerInfo.name}
-              className="w-16 h-16 rounded-2xl object-cover border-2 border-primary/40 shadow-md"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-primary/40 shadow-md shrink-0"
             />
           ) : (
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-300 font-display font-bold text-2xl flex items-center justify-center border border-amber-500/30">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/20 text-amber-300 font-display font-bold text-xl sm:text-2xl flex items-center justify-center border border-amber-500/30 shrink-0">
               {trainerInfo?.name?.[0] || 'C'}
             </div>
           )}
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-display font-extrabold text-xl text-white">{trainerInfo?.name}</h2>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="font-display font-extrabold text-lg sm:text-xl text-white">{trainerInfo?.name}</h2>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold">
                 HEAD COACH
               </span>
@@ -93,8 +93,8 @@ export const TrainerPortalPage: React.FC<TrainerPortalPageProps> = ({
             <div className="text-xs text-primary font-semibold mt-0.5">
               {trainerInfo?.specialization || 'Olympic Weightlifting & Strength Conditioning'}
             </div>
-            <div className="text-xs text-[#7e8eb2] mt-1">
-              {trainerInfo?.experienceYears} Years Experience • Certifications:{' '}
+            <div className="text-xs text-[#7e8eb2] mt-0.5">
+              {trainerInfo?.experienceYears} Years Exp • Certifications:{' '}
               {trainerInfo?.certifications?.join(', ')}
             </div>
           </div>
@@ -102,7 +102,7 @@ export const TrainerPortalPage: React.FC<TrainerPortalPageProps> = ({
 
         <button
           onClick={() => onNavigate('workouts')}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 shrink-0"
+          className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 shrink-0 min-h-[42px]"
         >
           <span className="material-symbols-outlined text-base">fitness_center</span>
           <span>Open Routine Builder</span>
@@ -110,7 +110,7 @@ export const TrainerPortalPage: React.FC<TrainerPortalPageProps> = ({
       </div>
 
       {/* Grid: My Classes to Coach + Assigned Athletic Clients */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Classes Scheduled for this Coach */}
         <div className="lg:col-span-6 p-6 rounded-3xl bg-[#0e172c] border border-[#202c4b] space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-[#1b2746]">

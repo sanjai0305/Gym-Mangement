@@ -103,30 +103,30 @@ export const BillingPage: React.FC<BillingPageProps> = ({
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto text-[#dae2fd]">
       {/* Financial Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Total Gross Revenue</div>
-          <div className="font-display font-extrabold text-2xl text-emerald-400 mt-1">
+          <div className="font-display font-extrabold text-xl sm:text-2xl text-emerald-400 mt-1">
             {gym?.currency || '₹'}
             {totalRevenue.toLocaleString()}
           </div>
           <div className="text-[11px] text-[#6e7e9f] mt-1">{payments.length} verified transactions</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Operating Expenses</div>
-          <div className="font-display font-extrabold text-2xl text-rose-400 mt-1">
+          <div className="font-display font-extrabold text-xl sm:text-2xl text-rose-400 mt-1">
             {gym?.currency || '₹'}
             {totalExpenses.toLocaleString()}
           </div>
           <div className="text-[11px] text-[#6e7e9f] mt-1">Rent, electricity, repairs</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0f182e] border border-[#202c4b]">
           <div className="text-xs text-[#8090b4]">Net Operating Margin</div>
-          <div className="font-display font-extrabold text-2xl text-primary mt-1">
+          <div className="font-display font-extrabold text-xl sm:text-2xl text-primary mt-1">
             {gym?.currency || '₹'}
             {netProfit.toLocaleString()}
           </div>
@@ -137,11 +137,11 @@ export const BillingPage: React.FC<BillingPageProps> = ({
       </div>
 
       {/* Tabs & Action Bar */}
-      <div className="p-4 rounded-2xl bg-[#0f182e] border border-[#202c4b] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+      <div className="p-3 sm:p-4 rounded-2xl bg-[#0f182e] border border-[#202c4b] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setActiveTab('payments')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
               activeTab === 'payments'
                 ? 'bg-primary text-[#0b1326] shadow-md shadow-primary/20'
                 : 'text-[#8797bc] hover:bg-[#141f39] hover:text-white'
@@ -151,7 +151,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('expenses')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
               activeTab === 'expenses'
                 ? 'bg-primary text-[#0b1326] shadow-md shadow-primary/20'
                 : 'text-[#8797bc] hover:bg-[#141f39] hover:text-white'
@@ -185,7 +185,8 @@ export const BillingPage: React.FC<BillingPageProps> = ({
       {/* Tables based on active tab */}
       {activeTab === 'payments' ? (
         <div className="border border-[#202c4b] rounded-3xl bg-[#0e172c] overflow-hidden shadow-xl">
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-xs text-left">
               <thead className="bg-[#121b33] text-[#7a8ba8] uppercase text-[10px] tracking-wider border-b border-[#1f2c4b]">
                 <tr>
@@ -255,10 +256,61 @@ export const BillingPage: React.FC<BillingPageProps> = ({
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Payment Cards */}
+          <div className="md:hidden p-3 space-y-3">
+            {loading ? (
+              <div className="p-8 text-center text-xs text-[#707f9f]">Loading payment records...</div>
+            ) : payments.length === 0 ? (
+              <div className="p-8 text-center text-xs text-[#707f9f]">No payments found.</div>
+            ) : (
+              payments.map((p) => (
+                <div key={p._id} className="p-3.5 rounded-2xl bg-[#121c35] border border-[#1e2d4e] space-y-2.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="font-mono text-xs font-bold text-white">{p.invoiceNumber}</div>
+                      <div
+                        onClick={() => onSelectMember(p.memberId)}
+                        className="text-xs font-semibold text-primary hover:underline cursor-pointer"
+                      >
+                        {p.memberName}
+                      </div>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono font-bold">
+                      {p.status}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-[11px] pt-1 border-t border-[#1a2748]">
+                    <div>
+                      <span className="text-[#6c7c9e] block text-[9px]">AMOUNT</span>
+                      <span className="font-mono font-bold text-white text-xs">
+                        {gym?.currency || '₹'}{p.amount.toLocaleString()}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[#6c7c9e] block text-[9px]">METHOD & DATE</span>
+                      <span className="text-slate-300 text-[10px]">{p.paymentMethod} • {p.paymentDate}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-1">
+                    <button
+                      onClick={() => onOpenInvoice(p.invoiceNumber)}
+                      className="w-full py-2 rounded-xl bg-[#172340] hover:bg-[#1f2f57] border border-[#273760] text-primary text-xs font-semibold"
+                    >
+                      View Invoice Receipt
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       ) : (
         <div className="border border-[#202c4b] rounded-3xl bg-[#0e172c] overflow-hidden shadow-xl">
-          <div className="overflow-x-auto">
+          {/* Desktop Expenses Table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-xs text-left">
               <thead className="bg-[#121b33] text-[#7a8ba8] uppercase text-[10px] tracking-wider border-b border-[#1f2c4b]">
                 <tr>
@@ -313,30 +365,65 @@ export const BillingPage: React.FC<BillingPageProps> = ({
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Expense Cards */}
+          <div className="md:hidden p-3 space-y-3">
+            {loading ? (
+              <div className="p-8 text-center text-xs text-[#707f9f]">Loading expenses...</div>
+            ) : expenses.length === 0 ? (
+              <div className="p-8 text-center text-xs text-[#707f9f]">No expenses logged yet.</div>
+            ) : (
+              expenses.map((exp) => (
+                <div key={exp._id} className="p-3.5 rounded-2xl bg-[#121c35] border border-[#1e2d4e] space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 font-semibold">
+                      {exp.category}
+                    </span>
+                    <span className="font-mono font-bold text-rose-400 text-xs">
+                      {gym?.currency || '₹'}{exp.amount.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="font-semibold text-white text-xs">{exp.description}</div>
+
+                  <div className="flex items-center justify-between text-[10px] text-[#7888ab] pt-1 border-t border-[#1a2748]">
+                    <span>{exp.paymentMethod} • {exp.date}</span>
+                    <button
+                      onClick={() => handleDeleteExpense(exp._id)}
+                      className="text-rose-400 p-1 hover:bg-rose-500/10 rounded-lg"
+                      title="Delete"
+                    >
+                      <span className="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       )}
 
       {/* Record Payment Modal */}
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0e162b] border border-[#233154] rounded-2xl p-6 shadow-2xl space-y-4 text-[#dae2fd]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1c2744]">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="w-full max-w-md max-h-[90vh] flex flex-col bg-[#0e162b] border border-[#233154] rounded-2xl shadow-2xl text-[#dae2fd]">
+            <div className="p-4 sm:p-5 flex items-center justify-between border-b border-[#1c2744] shrink-0">
               <h3 className="font-display font-bold text-base text-white">Record Member Payment</h3>
               <button
                 onClick={() => setShowPaymentModal(false)}
-                className="text-[#6d7c9e] hover:text-white"
+                className="text-[#6d7c9e] hover:text-white p-1"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleRecordPayment} className="space-y-3">
+            <form onSubmit={handleRecordPayment} className="p-4 sm:p-6 space-y-3.5 overflow-y-auto flex-1">
               <div>
                 <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">Select Member</label>
                 <select
                   value={paymentForm.memberId}
                   onChange={(e) => setPaymentForm({ ...paymentForm, memberId: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                 >
                   {members.map((m) => (
                     <option key={m._id} value={m._id}>
@@ -346,7 +433,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">
                     Amount ({gym?.currency || '₹'})
@@ -358,7 +445,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                     onChange={(e) =>
                       setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                   />
                 </div>
 
@@ -369,7 +456,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                     onChange={(e) =>
                       setPaymentForm({ ...paymentForm, paymentMethod: e.target.value as any })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                   >
                     <option value="UPI">UPI / QR</option>
                     <option value="CARD">Debit / Credit Card</option>
@@ -385,21 +472,21 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                   type="text"
                   value={paymentForm.notes}
                   onChange={(e) => setPaymentForm({ ...paymentForm, notes: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-2">
+              <div className="pt-3 flex flex-col-reverse sm:flex-row justify-end gap-2 border-t border-[#1c2744]">
                 <button
                   type="button"
                   onClick={() => setShowPaymentModal(false)}
-                  className="px-3 py-2 rounded-xl text-xs text-[#7e8eb2]"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs text-[#7e8eb2] hover:bg-[#16213a]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs hover:brightness-110"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs hover:brightness-110"
                 >
                   Generate Tax Receipt
                 </button>
@@ -411,25 +498,25 @@ export const BillingPage: React.FC<BillingPageProps> = ({
 
       {/* Log Expense Modal */}
       {showExpenseModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0e162b] border border-[#233154] rounded-2xl p-6 shadow-2xl space-y-4 text-[#dae2fd]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1c2744]">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="w-full max-w-md max-h-[90vh] flex flex-col bg-[#0e162b] border border-[#233154] rounded-2xl shadow-2xl text-[#dae2fd]">
+            <div className="p-4 sm:p-5 flex items-center justify-between border-b border-[#1c2744] shrink-0">
               <h3 className="font-display font-bold text-base text-white">Log Operating Expense</h3>
               <button
                 onClick={() => setShowExpenseModal(false)}
-                className="text-[#6d7c9e] hover:text-white"
+                className="text-[#6d7c9e] hover:text-white p-1"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleAddExpense} className="space-y-3">
+            <form onSubmit={handleAddExpense} className="p-4 sm:p-6 space-y-3.5 overflow-y-auto flex-1">
               <div>
                 <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">Expense Category</label>
                 <select
                   value={expenseForm.category}
                   onChange={(e) => setExpenseForm({ ...expenseForm, category: e.target.value as any })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                 >
                   <option value="Rent">Facility Rent</option>
                   <option value="Electricity">Electricity & HVAC</option>
@@ -449,11 +536,11 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                   placeholder="e.g. Olympic Barbell Replacement"
                   value={expenseForm.description}
                   onChange={(e) => setExpenseForm({ ...expenseForm, description: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#8b9bc1] block mb-1">
                     Amount ({gym?.currency || '₹'})
@@ -465,7 +552,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                     onChange={(e) =>
                       setExpenseForm({ ...expenseForm, amount: Number(e.target.value) })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                   />
                 </div>
 
@@ -476,7 +563,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                     onChange={(e) =>
                       setExpenseForm({ ...expenseForm, paymentMethod: e.target.value as any })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#131d36] border border-[#223053] text-xs text-white focus:outline-none focus:border-primary"
                   >
                     <option value="BANK_TRANSFER">Bank Wire</option>
                     <option value="UPI">UPI</option>
@@ -486,17 +573,17 @@ export const BillingPage: React.FC<BillingPageProps> = ({
                 </div>
               </div>
 
-              <div className="pt-2 flex justify-end gap-2">
+              <div className="pt-3 flex flex-col-reverse sm:flex-row justify-end gap-2 border-t border-[#1c2744]">
                 <button
                   type="button"
                   onClick={() => setShowExpenseModal(false)}
-                  className="px-3 py-2 rounded-xl text-xs text-[#7e8eb2]"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs text-[#7e8eb2] hover:bg-[#16213a]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-display font-bold text-xs"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-display font-bold text-xs"
                 >
                   Save Expense
                 </button>

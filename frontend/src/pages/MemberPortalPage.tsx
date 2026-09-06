@@ -84,24 +84,24 @@ export const MemberPortalPage: React.FC<MemberPortalPageProps> = ({ onOpenInvoic
   }
 
   return (
-    <div className="p-8 space-y-8 max-w-5xl mx-auto text-[#dae2fd]">
+    <div className="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-5xl mx-auto text-[#dae2fd]">
       {/* Top Banner */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#121c35] to-[#0d162a] border border-[#202e52] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
+      <div className="p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-[#121c35] to-[#0d162a] border border-[#202e52] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {member?.profileImage ? (
             <img
               src={member.profileImage}
               alt={member.name}
-              className="w-16 h-16 rounded-2xl object-cover border-2 border-primary/50 shadow-md"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-primary/50 shadow-md shrink-0"
             />
           ) : (
-            <div className="w-16 h-16 rounded-2xl bg-primary/20 text-primary font-display font-bold text-2xl flex items-center justify-center border border-primary/40">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-primary/20 text-primary font-display font-bold text-xl sm:text-2xl flex items-center justify-center border border-primary/40 shrink-0">
               {member?.name?.[0] || 'M'}
             </div>
           )}
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-display font-extrabold text-xl text-white">{member?.name}</h2>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="font-display font-extrabold text-lg sm:text-xl text-white">{member?.name}</h2>
               <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono font-bold">
                 {member?.status || 'ACTIVE'}
               </span>
@@ -109,13 +109,13 @@ export const MemberPortalPage: React.FC<MemberPortalPageProps> = ({ onOpenInvoic
             <div className="font-mono text-xs text-primary font-bold mt-0.5">
               ID: {member?.memberId}
             </div>
-            <div className="text-xs text-[#7b8cae] mt-1">{gym?.name} • All-Access Pass</div>
+            <div className="text-xs text-[#7b8cae] mt-0.5">{gym?.name} • All-Access Pass</div>
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="text-left sm:text-right border-t sm:border-t-0 border-[#1c2743] pt-2 sm:pt-0">
           <div className="text-xs font-mono text-[#8a9bbd]">Days Remaining</div>
-          <div className="text-2xl font-display font-black text-white">
+          <div className="text-xl sm:text-2xl font-display font-black text-white">
             {member?.daysRemaining !== undefined && member?.daysRemaining >= 0
               ? `${member.daysRemaining} Days`
               : 'Expired'}
@@ -124,9 +124,9 @@ export const MemberPortalPage: React.FC<MemberPortalPageProps> = ({ onOpenInvoic
       </div>
 
       {/* Main Grid: Digital Passport QR Card + Member Capabilities */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start">
         {/* Digital Member ID Card (QR Pass) */}
-        <div className="md:col-span-5 p-6 rounded-3xl bg-[#0b1222] border-2 border-primary/40 shadow-2xl shadow-primary/10 text-center space-y-4 relative overflow-hidden">
+        <div className="md:col-span-5 p-4 sm:p-6 rounded-3xl bg-[#0b1222] border-2 border-primary/40 shadow-2xl shadow-primary/10 text-center space-y-4 relative overflow-hidden">
           {/* Subtle glow background */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-primary/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -140,11 +140,11 @@ export const MemberPortalPage: React.FC<MemberPortalPageProps> = ({ onOpenInvoic
             <span className="text-[10px] font-mono text-emerald-400 font-bold">LIVE UNLOCKED</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl inline-block shadow-lg mx-auto">
+          <div className="p-3 sm:p-4 bg-white rounded-2xl inline-block shadow-lg mx-auto max-w-full">
             {qrDataUrl ? (
-              <img src={qrDataUrl} alt="Member QR Code" className="w-52 h-52 mx-auto" />
+              <img src={qrDataUrl} alt="Member QR Code" className="w-40 h-40 sm:w-52 sm:h-52 mx-auto max-w-full" />
             ) : (
-              <div className="w-52 h-52 bg-slate-100 flex items-center justify-center text-xs text-slate-500 font-mono">
+              <div className="w-40 h-40 sm:w-52 sm:h-52 bg-slate-100 flex items-center justify-center text-xs text-slate-500 font-mono">
                 Generating Code...
               </div>
             )}

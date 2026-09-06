@@ -39,14 +39,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className="min-h-screen bg-[#070e1e] text-[#dae2fd] selection:bg-primary selection:text-[#0b1326]">
       {/* Navigation Bar */}
-      <nav className="h-20 border-b border-[#18233e] bg-[#070e1e]/80 backdrop-blur-md sticky top-0 z-50 px-6 md:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-[#a3e635] flex items-center justify-center text-[#0b1326] font-extrabold shadow-lg shadow-primary/20">
-            <span className="material-symbols-outlined text-2xl font-bold">bolt</span>
+      <nav className="h-16 sm:h-20 border-b border-[#18233e] bg-[#070e1e]/80 backdrop-blur-md sticky top-0 z-50 px-4 sm:px-6 md:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary to-[#a3e635] flex items-center justify-center text-[#0b1326] font-extrabold shadow-lg shadow-primary/20 shrink-0">
+            <span className="material-symbols-outlined text-xl sm:text-2xl font-bold">bolt</span>
           </div>
           <div>
-            <span className="font-display font-black text-xl tracking-wider text-white">FITCORE</span>
-            <span className="ml-1.5 text-[10px] px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-bold">
+            <span className="font-display font-black text-lg sm:text-xl tracking-wider text-white">FITCORE</span>
+            <span className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary font-mono font-bold">
               SAAS
             </span>
           </div>
@@ -56,9 +56,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <a href="#features" className="hover:text-white transition">
             Platform Capabilities
           </a>
-          <a href="#turnstile" className="hover:text-white transition">
-            Turnstile & QR
-          </a>
           <a href="#pricing" className="hover:text-white transition">
             Pricing
           </a>
@@ -67,75 +64,75 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </a>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onOpenSignIn}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-white hover:bg-[#15223e] border border-[#23335b] transition"
+            className="px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold text-white hover:bg-[#15223e] border border-[#23335b] transition min-h-[38px]"
           >
             Sign In
           </button>
           <button
             onClick={onEnterApp}
-            className="px-4 py-2 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition active:scale-95"
+            className="px-3 sm:px-4 py-2 rounded-xl bg-primary text-[#0b1326] font-display font-bold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition active:scale-95 min-h-[38px] whitespace-nowrap"
           >
-            Live Demo Dashboard
+            Demo
           </button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-28 px-6 md:px-12 overflow-hidden border-b border-[#17233f]">
+      <section className="relative pt-12 sm:pt-20 pb-16 sm:pb-28 px-4 sm:px-6 md:px-12 overflow-hidden border-b border-[#17233f]">
         {/* Subtle grid background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#15223e15_1px,transparent_1px),linear-gradient(to_bottom,#15223e15_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
+        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-4 sm:space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#14213d] border border-primary/30 text-primary text-xs font-medium">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Next-Gen Multi-Tenant Gym Architecture</span>
           </div>
 
-          <h1 className="font-display font-extrabold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight leading-[1.1]">
+          <h1 className="font-display font-extrabold text-2xl sm:text-4xl md:text-6xl text-white tracking-tight leading-[1.15]">
             The Precision Operating System <br />
             for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#84cc16]">High-Performance Gyms</span>
           </h1>
 
-          <p className="max-w-2xl mx-auto text-sm md:text-base text-[#91a3cb] leading-relaxed">
+          <p className="max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-[#91a3cb] leading-relaxed">
             Eliminate revenue leakage, automate turnstile biometric check-ins, manage class rosters, and provide members with elite digital passports — all in one unified, multi-tenant cloud platform.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
             <button
               onClick={onEnterApp}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-sm shadow-xl shadow-primary/20 hover:brightness-110 transition transform active:scale-95 flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-sm shadow-xl shadow-primary/20 hover:brightness-110 transition transform active:scale-95 flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>Explore Live Dashboard</span>
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </button>
             <button
               onClick={onOpenRegister}
-              className="px-6 py-3.5 rounded-xl bg-[#121d37] hover:bg-[#1a284c] border border-[#24355d] text-white font-semibold text-sm transition"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#121d37] hover:bg-[#1a284c] border border-[#24355d] text-white font-semibold text-sm transition min-h-[44px]"
             >
               Create New Gym Facility
             </button>
           </div>
 
           {/* Metric highlights preview */}
-          <div className="pt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
-              <div className="text-2xl font-display font-extrabold text-white">99.8%</div>
-              <div className="text-xs text-[#7e8eb2] mt-1">Turnstile Uptime SLA</div>
+          <div className="pt-8 sm:pt-14 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
+              <div className="text-xl sm:text-2xl font-display font-extrabold text-white">99.8%</div>
+              <div className="text-[11px] sm:text-xs text-[#7e8eb2] mt-1">Turnstile Uptime SLA</div>
             </div>
-            <div className="p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
-              <div className="text-2xl font-display font-extrabold text-primary">&lt; 200ms</div>
-              <div className="text-xs text-[#7e8eb2] mt-1">QR Verification Latency</div>
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
+              <div className="text-xl sm:text-2xl font-display font-extrabold text-primary">&lt; 200ms</div>
+              <div className="text-[11px] sm:text-xs text-[#7e8eb2] mt-1">QR Verification</div>
             </div>
-            <div className="p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
-              <div className="text-2xl font-display font-extrabold text-white">100%</div>
-              <div className="text-xs text-[#7e8eb2] mt-1">Tenant Data Isolation</div>
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
+              <div className="text-xl sm:text-2xl font-display font-extrabold text-white">100%</div>
+              <div className="text-[11px] sm:text-xs text-[#7e8eb2] mt-1">Data Isolation</div>
             </div>
-            <div className="p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
-              <div className="text-2xl font-display font-extrabold text-emerald-400">Zero</div>
-              <div className="text-xs text-[#7e8eb2] mt-1">Unpaid Check-in Leaks</div>
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0f1931] border border-[#1d2a4a] text-left">
+              <div className="text-xl sm:text-2xl font-display font-extrabold text-emerald-400">Zero</div>
+              <div className="text-[11px] sm:text-xs text-[#7e8eb2] mt-1">Unpaid Leaks</div>
             </div>
           </div>
         </div>
@@ -378,9 +375,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           </div>
 
-          <div className="p-8 rounded-3xl bg-[#0d162a] border border-[#202e52] shadow-2xl">
+          <div className="p-4 sm:p-8 rounded-3xl bg-[#0d162a] border border-[#202e52] shadow-2xl">
             {contactSubmitted ? (
-              <div className="p-8 text-center space-y-3">
+              <div className="p-4 sm:p-8 text-center space-y-3">
                 <div className="w-14 h-14 mx-auto rounded-full bg-primary/20 text-primary flex items-center justify-center">
                   <span className="material-symbols-outlined text-3xl">check_circle</span>
                 </div>
@@ -390,14 +387,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </p>
                 <button
                   onClick={() => setContactSubmitted(false)}
-                  className="mt-4 px-4 py-2 rounded-xl bg-[#172340] text-xs text-white"
+                  className="mt-4 px-4 py-2.5 rounded-xl bg-[#172340] text-xs text-white min-h-[40px]"
                 >
                   Send another message
                 </button>
               </div>
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-[11px] font-semibold text-[#8092b7] block mb-1">
                       Your Name
@@ -408,7 +405,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       placeholder="Marcus Vance"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                     />
                   </div>
                   <div>
@@ -421,12 +418,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       placeholder="Titan Performance"
                       value={contactForm.gymName}
                       onChange={(e) => setContactForm({ ...contactForm, gymName: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-[11px] font-semibold text-[#8092b7] block mb-1">
                       Work Email
@@ -437,7 +434,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       placeholder="owner@titangym.com"
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                     />
                   </div>
                   <div>
@@ -449,7 +446,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       placeholder="+1 (555) 000-0000"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary min-h-[42px]"
                     />
                   </div>
                 </div>
@@ -463,14 +460,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     placeholder="Tell us about your member count, turnstile hardware, or branches..."
                     value={contactForm.message}
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#111c34] border border-[#202f52] text-xs text-white focus:outline-none focus:border-primary"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50"
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-[#a3e635] text-[#0b1326] font-display font-extrabold text-xs shadow-lg shadow-primary/25 hover:brightness-110 transition disabled:opacity-50 min-h-[44px]"
                 >
                   {submitting ? 'Submitting...' : 'Request VIP Technical Demo'}
                 </button>
