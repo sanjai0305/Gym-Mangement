@@ -28,6 +28,22 @@ export class ExpenseService {
     return newExpense;
   }
 
+  public static async updateExpense(gymId: string, expenseId: string, data: Partial<Expense>): Promise<Expense> {
+    const db = dbService.getRawDb();
+    const index = db.expenses.findIndex((e) => e._id === expenseId && e.gymId === gymId);
+    if (index === -1) {
+      throw new Error('Expense record not found');
+    }
+    const updated = {
+      ...db.expenses[index],
+      ...data,
+      amount: data.amount !== undefined ? Number(data.amount) : db.expenses[index].amount,
+    };
+    db.expenses[index] = updated;
+    dbService.persist();
+    return updated;
+  }
+
   public static async deleteExpense(gymId: string, expenseId: string): Promise<void> {
     const db = dbService.getRawDb();
     db.expenses = db.expenses.filter((e) => !(e._id === expenseId && e.gymId === gymId));

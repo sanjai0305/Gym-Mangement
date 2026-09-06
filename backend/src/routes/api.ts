@@ -217,8 +217,57 @@ router.post('/plans', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: 
     res.status(400).json({ success: false, message: err.message });
   }
 });
+router.post('/memberships', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
+  try {
+    const { name, price, durationMonths } = req.body;
+    if (!name?.trim()) {
+      return res.status(400).json({ success: false, message: 'Plan name is required.' });
+    }
+    const numPrice = Number(price);
+    if (isNaN(numPrice) || numPrice < 0) {
+      return res.status(400).json({ success: false, message: 'Price must be a valid positive number.' });
+    }
+    const numDuration = Number(durationMonths);
+    if (isNaN(numDuration) || numDuration < 1) {
+      return res.status(400).json({ success: false, message: 'Duration must be at least 1 month.' });
+    }
+
+    const db = dbService.getRawDb();
+    const nowIso = new Date().toISOString();
+    const newPlan = {
+      _id: `plan-${Date.now()}`,
+      gymId: req.user!.gymId,
+      name: name.trim(),
+      description: req.body.description || '',
+      price: numPrice,
+      durationMonths: numDuration,
+      features: Array.isArray(req.body.features) ? req.body.features : ['Gym Floor Access', 'Locker Room'],
+      maxClasses: Number(req.body.maxClasses) || 10,
+      isActive: true,
+      createdAt: nowIso,
+      updatedAt: nowIso,
+    };
+    db.membershipPlans.push(newPlan);
+    dbService.persist();
+    res.status(201).json({ success: true, message: 'Membership plan created successfully', data: newPlan });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
 
 router.put('/plans/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
+  try {
+    const db = dbService.getRawDb();
+    const index = db.membershipPlans.findIndex((p) => p._id === req.params.id && p.gymId === req.user!.gymId);
+    if (index === -1) throw new Error('Plan not found');
+    db.membershipPlans[index] = { ...db.membershipPlans[index], ...req.body, updatedAt: new Date().toISOString() };
+    dbService.persist();
+    res.json({ success: true, message: 'Plan updated', data: db.membershipPlans[index] });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+router.put('/memberships/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
   try {
     const db = dbService.getRawDb();
     const index = db.membershipPlans.findIndex((p) => p._id === req.params.id && p.gymId === req.user!.gymId);
@@ -238,10 +287,30 @@ router.delete('/plans/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async 
     if (planIndex === -1) {
       return res.status(404).json({ success: false, message: 'Plan not found' });
     }
-    // Check if any active memberships are bound to this plan
     const boundMemberships = db.memberships.filter((m) => m.planId === req.params.id && m.status === 'ACTIVE');
     if (boundMemberships.length > 0) {
-      // Soft-delete by setting isActive to false
+      db.membershipPlans[planIndex].isActive = false;
+      db.membershipPlans[planIndex].updatedAt = new Date().toISOString();
+      dbService.persist();
+      return res.json({ success: true, message: 'Plan deactivated because active members are currently subscribed.' });
+    }
+
+    db.membershipPlans.splice(planIndex, 1);
+    dbService.persist();
+    res.json({ success: true, message: 'Membership plan removed successfully' });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+router.delete('/memberships/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
+  try {
+    const db = dbService.getRawDb();
+    const planIndex = db.membershipPlans.findIndex((p) => p._id === req.params.id && p.gymId === req.user!.gymId);
+    if (planIndex === -1) {
+      return res.status(404).json({ success: false, message: 'Plan not found' });
+    }
+    const boundMemberships = db.memberships.filter((m) => m.planId === req.params.id && m.status === 'ACTIVE');
+    if (boundMemberships.length > 0) {
       db.membershipPlans[planIndex].isActive = false;
       db.membershipPlans[planIndex].updatedAt = new Date().toISOString();
       dbService.persist();
@@ -289,6 +358,30 @@ router.post('/attendance/check-in', authenticate, async (req: AuthRequest, res: 
 router.post('/attendance/:id/check-out', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const att = await AttendanceService.checkOut(req.user!.gymId, req.params.id);
+    res.json({ success: true, message: 'Member checked out', data: att });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+router.post('/attendance/check-out', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const targetId = req.body.id || req.body.attendanceId;
+    if (!targetId && req.body.memberId) {
+      const today = new Date().toISOString().split('T')[0];
+      const db = dbService.getRawDb();
+      const latest = db.attendances.find(
+        (a) => a.gymId === req.user!.gymId && a.memberId === req.body.memberId && a.date === today && !a.checkOut
+      );
+      if (latest) {
+        const att = await AttendanceService.checkOut(req.user!.gymId, latest._id);
+        return res.json({ success: true, message: 'Member checked out', data: att });
+      }
+    }
+    if (!targetId) {
+      return res.status(400).json({ success: false, message: 'Attendance ID or active checked-in member ID is required.' });
+    }
+    const att = await AttendanceService.checkOut(req.user!.gymId, targetId);
     res.json({ success: true, message: 'Member checked out', data: att });
   } catch (err: any) {
     res.status(400).json({ success: false, message: err.message });
@@ -536,6 +629,15 @@ router.post('/expenses', authenticate, requireRoles('OWNER', 'ADMIN'), async (re
   }
 });
 
+router.put('/expenses/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
+  try {
+    const expense = await ExpenseService.updateExpense(req.user!.gymId, req.params.id, req.body);
+    res.json({ success: true, message: 'Expense updated', data: expense });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
 router.delete('/expenses/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
   try {
     await ExpenseService.deleteExpense(req.user!.gymId, req.params.id);
@@ -565,6 +667,24 @@ router.post('/workouts', authenticate, requireRoles('OWNER', 'ADMIN', 'TRAINER')
     }
     const plan = await WorkoutService.createWorkout(req.user!.gymId, req.body);
     res.status(201).json({ success: true, message: 'Workout routine assigned', data: plan });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+router.put('/workouts/:id', authenticate, requireRoles('OWNER', 'ADMIN', 'TRAINER'), async (req: AuthRequest, res: Response) => {
+  try {
+    const plan = await WorkoutService.updateWorkout(req.user!.gymId, req.params.id, req.body);
+    res.json({ success: true, message: 'Workout routine updated', data: plan });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+router.delete('/workouts/:id', authenticate, requireRoles('OWNER', 'ADMIN'), async (req: AuthRequest, res: Response) => {
+  try {
+    await WorkoutService.deleteWorkout(req.user!.gymId, req.params.id);
+    res.json({ success: true, message: 'Workout routine deleted' });
   } catch (err: any) {
     res.status(400).json({ success: false, message: err.message });
   }

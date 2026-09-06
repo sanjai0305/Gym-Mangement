@@ -1,4 +1,7 @@
-const API_BASE = (import.meta.env.VITE_API_URL as string) || '/api';
+const rawApiUrl = (import.meta.env.VITE_API_URL as string) || '';
+
+// If VITE_API_URL is configured, normalize it; otherwise default to '/api' for local/same-origin proxying
+const API_BASE = rawApiUrl ? rawApiUrl.replace(/\/+$/, '') : '/api';
 
 export function getAuthToken(): string | null {
   return localStorage.getItem('fitcore_token');
@@ -16,6 +19,7 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
   const token = getAuthToken();
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
     ...(options.headers || {}),
   };
 
@@ -23,18 +27,51 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
     (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
   }
 
-  // Handle base URL ending with slash vs not
-  const cleanBase = API_BASE.endsWith('/') ? API_BASE.slice(0, -1) : API_BASE;
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const targetUrl = `${API_BASE}${cleanEndpoint}`;
 
-  const response = await fetch(`${cleanBase}${cleanEndpoint}`, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(targetUrl, {
+      ...options,
+      headers,
+      credentials: options.credentials || 'include',
+    });
+  } catch (networkError: any) {
+    console.error(`[API Network Error] Failed to reach ${targetUrl}:`, networkError);
+    if (!rawApiUrl && typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+      throw new Error(
+        'VITE_API_URL is not configured in your Vercel frontend project settings. Please set VITE_API_URL=https://<your-backend>.vercel.app/api and redeploy.'
+      );
+    }
+    throw new Error(
+      `Unable to connect to backend at ${targetUrl}. Please check your internet connection or verify VITE_API_URL deployment settings.`
+    );
+  }
 
-  const data = await response.json();
+  // Parse response defensively
+  let data: any;
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    try {
+      data = await response.json();
+    } catch {
+      data = { success: false, message: `Server returned invalid JSON (${response.status})` };
+    }
+  } else {
+    const text = await response.text();
+    // Detect if Vercel returned an index.html rewrite or 404/500 HTML
+    if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+      throw new Error(
+        `Backend endpoint '${cleanEndpoint}' returned an HTML page (${response.status}). Verify backend deployment and VITE_API_URL.`
+      );
+    }
+    data = { success: response.ok, message: text || `HTTP ${response.status} ${response.statusText}` };
+  }
+
   if (!response.ok || data.success === false) {
-    throw new Error(data.message || `Request failed with status ${response.status}`);
+    const errMsg = data.message || (Array.isArray(data.errors) ? data.errors.join(', ') : `Request failed with status ${response.status}`);
+    throw new Error(errMsg);
   }
 
   return data;
@@ -81,19 +118,28 @@ export const api = {
   renewMembership: (id: string, planId: string) =>
     request(`/members/${id}/renew`, { method: 'POST', body: JSON.stringify({ planId }) }),
 
-  // Plans
+  // Plans & Memberships
   getPlans: () => request('/plans'),
+  getMemberships: () => request('/memberships'),
   createPlan: (plan: any) => request('/plans', { method: 'POST', body: JSON.stringify(plan) }),
+  createMembership: (plan: any) => request('/memberships', { method: 'POST', body: JSON.stringify(plan) }),
   updatePlan: (id: string, plan: any) => request(`/plans/${id}`, { method: 'PUT', body: JSON.stringify(plan) }),
+  updateMembership: (id: string, plan: any) => request(`/memberships/${id}`, { method: 'PUT', body: JSON.stringify(plan) }),
   deletePlan: (id: string) => request(`/plans/${id}`, { method: 'DELETE' }),
+  deleteMembership: (id: string) => request(`/memberships/${id}`, { method: 'DELETE' }),
 
-  // Attendance
+  // Attendance & Turnstiles
   getAttendance: (date?: string) => request(`/attendance${date ? `?date=${date}` : ''}`),
   checkIn: (payload: { memberId: string; method?: string; turnstile?: string }) =>
     request('/attendance/check-in', { method: 'POST', body: JSON.stringify(payload) }),
-  checkOut: (id: string) => request(`/attendance/${id}/check-out`, { method: 'POST' }),
+  checkOut: (idOrPayload: string | { id?: string; memberId?: string; attendanceId?: string }) => {
+    if (typeof idOrPayload === 'string') {
+      return request(`/attendance/${idOrPayload}/check-out`, { method: 'POST' });
+    }
+    return request('/attendance/check-out', { method: 'POST', body: JSON.stringify(idOrPayload) });
+  },
 
-  // Classes
+  // Classes & Scheduling
   getClasses: (date?: string) => request(`/classes${date ? `?date=${date}` : ''}`),
   createClass: (payload: any) => request('/classes', { method: 'POST', body: JSON.stringify(payload) }),
   updateClass: (id: string, payload: any) => request(`/classes/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
@@ -119,11 +165,14 @@ export const api = {
   // Expenses
   getExpenses: () => request('/expenses'),
   addExpense: (expense: any) => request('/expenses', { method: 'POST', body: JSON.stringify(expense) }),
+  updateExpense: (id: string, expense: any) => request(`/expenses/${id}`, { method: 'PUT', body: JSON.stringify(expense) }),
   deleteExpense: (id: string) => request(`/expenses/${id}`, { method: 'DELETE' }),
 
   // Workouts
   getWorkouts: (memberId?: string) => request(`/workouts${memberId ? `?memberId=${memberId}` : ''}`),
   createWorkout: (workout: any) => request('/workouts', { method: 'POST', body: JSON.stringify(workout) }),
+  updateWorkout: (id: string, workout: any) => request(`/workouts/${id}`, { method: 'PUT', body: JSON.stringify(workout) }),
+  deleteWorkout: (id: string) => request(`/workouts/${id}`, { method: 'DELETE' }),
 
   // Notifications
   getNotifications: () => request('/notifications'),

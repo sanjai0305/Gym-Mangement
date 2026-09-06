@@ -58,4 +58,26 @@ export class WorkoutService {
     dbService.persist();
     return plan;
   }
+
+  public static async updateWorkout(gymId: string, workoutId: string, data: Partial<WorkoutPlan>): Promise<WorkoutPlan> {
+    const db = dbService.getRawDb();
+    const index = db.workoutPlans.findIndex((w) => w._id === workoutId && w.gymId === gymId);
+    if (index === -1) {
+      throw new Error('Workout plan not found');
+    }
+    const updated = {
+      ...db.workoutPlans[index],
+      ...data,
+      updatedAt: new Date().toISOString(),
+    };
+    db.workoutPlans[index] = updated;
+    dbService.persist();
+    return updated;
+  }
+
+  public static async deleteWorkout(gymId: string, workoutId: string): Promise<void> {
+    const db = dbService.getRawDb();
+    db.workoutPlans = db.workoutPlans.filter((w) => !(w._id === workoutId && w.gymId === gymId));
+    dbService.persist();
+  }
 }
