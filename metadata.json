@@ -1,0 +1,6 @@
+{
+  "name": "FITCORE – Gym Management SaaS",
+  "description": "Production-grade multi-tenant Gym Management SaaS platform for gym owners, receptionists, trainers, and members featuring attendance QR check-in, billing & invoicing, class scheduling, telemetry analytics, and member management.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

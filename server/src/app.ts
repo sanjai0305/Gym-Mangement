@@ -1,0 +1,60 @@
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import apiRouter from './routes/api';
+import { getDatabaseStatus } from './config/db';
+
+const app = express();
+
+// Security headers
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
+// Middlewares
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Request logging in development
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.path.startsWith('/api')) {
+    console.log(`[API] ${req.method} ${req.path}`);
+  }
+  next();
+});
+
+// Health check endpoint with accurate database reporting
+app.get('/api/health', (req: Request, res: Response) => {
+  const dbStatus = getDatabaseStatus();
+  res.json({
+    status: 'healthy',
+    service: 'FITCORE Gym Management SaaS',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    database: {
+      connected: dbStatus.isConnected,
+      engine: dbStatus.isConnected ? 'MongoDB Mongoose' : 'Resilient File Storage Fallback',
+      targetUri: dbStatus.uri ? dbStatus.uri.replace(/:([^:@]{3,})@/, ':***@') : 'local',
+      notice: dbStatus.error || null,
+    },
+  });
+});
+
+// Mount API routes
+app.use('/api', apiRouter);
+
+// Centralized error handler (Step 15: No stack traces in production, consistent JSON contract)
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error('[FITCORE Error Handler]', err.message || err);
+  const status = Number(err.status || err.statusCode) || 500;
+  res.status(status).json({
+    success: false,
+    message: err.message || 'An unexpected server error occurred. Please try again.',
+    ...(process.env.NODE_ENV === 'development' ? { stack: err.stack } : {}),
+  });
+});
+
+export default app;
