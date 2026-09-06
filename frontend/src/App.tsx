@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import { Sidebar } from './components/common/Sidebar';
 import { Header } from './components/common/Header';
+import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { MemberDrawer } from './components/common/MemberDrawer';
 import { AddMemberModal } from './components/common/AddMemberModal';
 import { QRScannerModal } from './components/common/QRScannerModal';
@@ -15,20 +18,25 @@ import { AttendancePage } from './pages/AttendancePage';
 import { ClassesPage } from './pages/ClassesPage';
 import { BillingPage } from './pages/BillingPage';
 import { WorkoutsPage } from './pages/WorkoutsPage';
+import { ReportsPage } from './pages/ReportsPage';
+import { NotificationsPage } from './pages/NotificationsPage';
 import { MemberPortalPage } from './pages/MemberPortalPage';
 import { TrainerPortalPage } from './pages/TrainerPortalPage';
 import { SettingsPage } from './pages/SettingsPage';
 
 import { api } from './services/api';
 import { Member } from './types';
+import { Sparkles } from 'lucide-react';
 
 function MainApp() {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Navigation view state
   const [currentView, setCurrentView] = useState<string>('dashboard');
-  const [isLanding, setIsLanding] = useState<boolean>(false);
-  const [authMode, setAuthMode] = useState<'signin' | 'register' | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Modals & Drawer state
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
@@ -39,21 +47,34 @@ function MainApp() {
   // Global search
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Auto route based on role
+  // Synchronize route paths with current view
   useEffect(() => {
-    if (user) {
+    const path = location.pathname;
+    if (path.includes('members') || path.includes('membership')) setCurrentView('members');
+    else if (path.includes('attendance') || path.includes('turnstile')) setCurrentView('attendance');
+    else if (path.includes('classes') || path.includes('schedule')) setCurrentView('classes');
+    else if (path.includes('billing') || path.includes('payments') || path.includes('expenses')) setCurrentView('billing');
+    else if (path.includes('workouts')) setCurrentView('workouts');
+    else if (path.includes('reports')) setCurrentView('reports');
+    else if (path.includes('notifications')) setCurrentView('notifications');
+    else if (path.includes('settings')) setCurrentView('settings');
+    else if (path.includes('member') && !path.includes('members')) setCurrentView('member-portal');
+    else if (path.includes('trainer')) setCurrentView('trainer-portal');
+    else if (path.includes('dashboard')) setCurrentView('dashboard');
+  }, [location.pathname]);
+
+  // Auto-route based on authenticated role
+  useEffect(() => {
+    if (user && location.pathname === '/') {
       if (user.role === 'MEMBER') {
         setCurrentView('member-portal');
       } else if (user.role === 'TRAINER') {
         setCurrentView('trainer-portal');
       } else {
-        // OWNER, ADMIN, RECEPTIONIST
-        if (currentView === 'member-portal' || currentView === 'trainer-portal') {
-          setCurrentView('dashboard');
-        }
+        setCurrentView('dashboard');
       }
     }
-  }, [user?.role]);
+  }, [user?.role, location.pathname]);
 
   const handleSelectMemberById = async (id: string) => {
     try {
@@ -64,45 +85,21 @@ function MainApp() {
     }
   };
 
+  const handleNavigate = (view: string) => {
+    setCurrentView(view);
+    // Update browser URL without reloading
+    const rolePrefix = user?.role === 'MEMBER' ? '/member' : user?.role === 'TRAINER' ? '/trainer' : '/admin';
+    navigate(`${rolePrefix}/${view}`);
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#070e1e] flex flex-col items-center justify-center text-[#dae2fd] space-y-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-[#a3e635] flex items-center justify-center text-[#0b1326] font-black shadow-xl shadow-primary/20 animate-pulse">
-          <span className="material-symbols-outlined text-3xl">bolt</span>
+      <div className="min-h-screen bg-[#070e1e] flex flex-col items-center justify-center text-slate-200 space-y-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-lime-500 flex items-center justify-center text-[#070e1e] font-black shadow-xl shadow-emerald-500/20 animate-pulse">
+          <Sparkles className="w-6 h-6 fill-current" />
         </div>
-        <div className="text-xs font-mono text-[#8b9bc1]">Bootstrapping FITCORE Cloud Engine...</div>
+        <div className="text-xs font-mono text-slate-400">Bootstrapping FITCORE Cloud SaaS...</div>
       </div>
-    );
-  }
-
-  // If public landing page requested
-  if (isLanding) {
-    return (
-      <LandingPage
-        onEnterApp={() => setIsLanding(false)}
-        onOpenSignIn={() => {
-          setIsLanding(false);
-          setAuthMode('signin');
-        }}
-        onOpenRegister={() => {
-          setIsLanding(false);
-          setAuthMode('register');
-        }}
-      />
-    );
-  }
-
-  // If auth page requested
-  if (authMode) {
-    return (
-      <AuthPage
-        initialMode={authMode}
-        onSuccess={() => setAuthMode(null)}
-        onBackToHome={() => {
-          setAuthMode(null);
-          setIsLanding(true);
-        }}
-      />
     );
   }
 
@@ -136,8 +133,18 @@ function MainApp() {
         };
       case 'workouts':
         return {
-          title: 'Workout Routines & Prescriptions',
+          title: 'Workout Protocols & Prescriptions',
           subtitle: 'Custom set/rep schemes, tempo cues, and progression tracking',
+        };
+      case 'reports':
+        return {
+          title: 'Analytics & Financial Reports',
+          subtitle: 'Consolidated performance metrics, P&L analysis, and capacity forecasting',
+        };
+      case 'notifications':
+        return {
+          title: 'System & Telemetry Alerts',
+          subtitle: 'Live turnstile events, payment notifications, and renewal alerts',
         };
       case 'member-portal':
         return {
@@ -162,9 +169,16 @@ function MainApp() {
   const meta = getViewMeta();
 
   return (
-    <div className="min-h-screen bg-[#070e1e] text-[#dae2fd] flex selection:bg-primary selection:text-[#0b1326]">
+    <div className="min-h-screen bg-[#070e1e] text-slate-200 flex selection:bg-emerald-500 selection:text-[#070e1e]">
       {/* Sidebar Navigation */}
-      <Sidebar currentView={currentView} onNavigate={(v) => setCurrentView(v)} />
+      <Sidebar
+        currentView={currentView}
+        onNavigate={handleNavigate}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        isMobileOpen={isMobileMenuOpen}
+        onCloseMobile={() => setIsMobileMenuOpen(false)}
+      />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -176,13 +190,15 @@ function MainApp() {
           onOpenQRScanner={() => setShowQRScanner(true)}
           searchQuery={currentView === 'members' ? searchQuery : undefined}
           onSearchChange={currentView === 'members' ? setSearchQuery : undefined}
+          onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
+          onNavigate={handleNavigate}
         />
 
-        {/* Dynamic Page Views */}
-        <main className="flex-1 overflow-y-auto pb-16">
+        {/* Dynamic View Content */}
+        <main className="flex-1 overflow-y-auto pb-20 lg:pb-12">
           {currentView === 'dashboard' && (
             <DashboardPage
-              onNavigate={(v) => setCurrentView(v)}
+              onNavigate={handleNavigate}
               onOpenQRScanner={() => setShowQRScanner(true)}
               onOpenAddMember={() => setShowAddMember(true)}
               onSelectMember={handleSelectMemberById}
@@ -214,6 +230,10 @@ function MainApp() {
 
           {currentView === 'workouts' && <WorkoutsPage />}
 
+          {currentView === 'reports' && <ReportsPage />}
+
+          {currentView === 'notifications' && <NotificationsPage />}
+
           {currentView === 'member-portal' && (
             <MemberPortalPage onOpenInvoice={(inv) => setActiveInvoiceNumber(inv)} />
           )}
@@ -221,12 +241,19 @@ function MainApp() {
           {currentView === 'trainer-portal' && (
             <TrainerPortalPage
               onSelectMember={handleSelectMemberById}
-              onNavigate={(v) => setCurrentView(v)}
+              onNavigate={handleNavigate}
             />
           )}
 
           {currentView === 'settings' && <SettingsPage />}
         </main>
+
+        {/* Responsive Mobile Bottom Navigation */}
+        <MobileBottomNav
+          currentView={currentView}
+          onNavigate={handleNavigate}
+          onOpenQRScanner={() => setShowQRScanner(true)}
+        />
       </div>
 
       {/* Slide-in Member Detail Drawer */}
@@ -237,7 +264,7 @@ function MainApp() {
           onMemberUpdated={() => handleSelectMemberById(selectedMember._id)}
           onViewWorkouts={() => {
             setSelectedMember(null);
-            setCurrentView('workouts');
+            handleNavigate('workouts');
           }}
         />
       )}
@@ -253,12 +280,12 @@ function MainApp() {
         }}
       />
 
-      {/* QR Scanner Modal */}
+      {/* QR Optical Turnstile Scanner Modal */}
       <QRScannerModal
         isOpen={showQRScanner}
         onClose={() => setShowQRScanner(false)}
         onCheckInSuccess={() => {
-          // Refresh current page if needed
+          // Check-in validated
         }}
       />
 
@@ -273,8 +300,89 @@ function MainApp() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainApp />
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ToastProvider>
+          <Routes>
+            {/* Public Landing & Marketing */}
+            <Route
+              path="/"
+              element={
+                <LandingPage
+                  onEnterApp={() => window.location.assign('/admin/dashboard')}
+                  onOpenSignIn={() => window.location.assign('/login')}
+                  onOpenRegister={() => window.location.assign('/register')}
+                />
+              }
+            />
+            <Route
+              path="/features"
+              element={
+                <LandingPage
+                  onEnterApp={() => window.location.assign('/admin/dashboard')}
+                  onOpenSignIn={() => window.location.assign('/login')}
+                  onOpenRegister={() => window.location.assign('/register')}
+                />
+              }
+            />
+            <Route
+              path="/pricing"
+              element={
+                <LandingPage
+                  onEnterApp={() => window.location.assign('/admin/dashboard')}
+                  onOpenSignIn={() => window.location.assign('/login')}
+                  onOpenRegister={() => window.location.assign('/register')}
+                />
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <LandingPage
+                  onEnterApp={() => window.location.assign('/admin/dashboard')}
+                  onOpenSignIn={() => window.location.assign('/login')}
+                  onOpenRegister={() => window.location.assign('/register')}
+                />
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <LandingPage
+                  onEnterApp={() => window.location.assign('/admin/dashboard')}
+                  onOpenSignIn={() => window.location.assign('/login')}
+                  onOpenRegister={() => window.location.assign('/register')}
+                />
+              }
+            />
+
+            {/* Auth Sign In / Register */}
+            <Route
+              path="/login"
+              element={
+                <AuthPage
+                  initialMode="signin"
+                  onSuccess={() => window.location.assign('/admin/dashboard')}
+                  onBackToHome={() => window.location.assign('/')}
+                />
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <AuthPage
+                  initialMode="register"
+                  onSuccess={() => window.location.assign('/admin/dashboard')}
+                  onBackToHome={() => window.location.assign('/')}
+                />
+              }
+            />
+
+            {/* Core Application Hub */}
+            <Route path="/*" element={<MainApp />} />
+          </Routes>
+        </ToastProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
